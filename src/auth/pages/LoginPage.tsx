@@ -271,8 +271,11 @@ const seleccionarPerfil = (perfil: Perfil) => {
               ¿No tienes una cuenta?
             </span>
 
-            <button type="button">
-              Crear cuenta
+            <button
+               type="button"
+               onClick={() => navigate('/registro')}
+            >
+               Crear cuenta
             </button>
           </div>
 

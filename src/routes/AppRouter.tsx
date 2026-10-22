@@ -6,6 +6,7 @@ import {
 } from 'react-router-dom'
 
 import LoginPage from '../auth/pages/LoginPage'
+import RegistroPage from '../auth/pages/RegistroPage'
 
 function AppRouter() {
   return (
@@ -24,6 +25,10 @@ function AppRouter() {
           element={<LoginPage />}
         />
 
+        <Route
+          path="/registro"
+          element={<RegistroPage />}
+        />
         {/* Rutas temporales por perfil */}
         <Route
           path="/cliente/inicio"
