@@ -19,6 +19,11 @@ import RecepcionClientesPage from '../roles/recepcion/pages/RecepcionClientesPag
 import DoctorInicioPage from '../roles/doctor/pages/DoctorInicioPage'
 import DoctorAgendaPage from '../roles/doctor/pages/DoctorAgendaPage'
 import DoctorCitasPage from '../roles/doctor/pages/DoctorCitasPage'
+import PromotorInicioPage from '../roles/promotor/pages/PromotorInicioPage'
+import PromotorClientesPage from '../roles/promotor/pages/PromotorClientesPage'
+import PromotorComprasPage from '../roles/promotor/pages/PromotorComprasPage'
+import PromotorConsultasPage from '../roles/promotor/pages/PromotorConsultasPage'
+import PromotorAgendamientoPage from '../roles/promotor/pages/PromotorAgendamientoPage'
 
 function AppRouter() {
   return (
@@ -50,8 +55,14 @@ function AppRouter() {
         <Route path="/recepcion/consultas" element={<RecepcionConsultasPage />} />
         <Route path="/recepcion/citas" element={<RecepcionCitasPage />} />
         
+        {/* Promotor BCP */}
+        <Route path="/promotor/inicio" element={<PromotorInicioPage />} />
+        <Route path="/promotor/clientes" element={<PromotorClientesPage />} />
+        <Route path="/promotor/compras" element={<PromotorComprasPage />} />
+        <Route path="/promotor/consultas" element={<PromotorConsultasPage />} />
+        <Route path="/promotor/agendamiento" element={<PromotorAgendamientoPage />} />
+       
         {/* Perfiles pendientes */}
-        <Route path="/promotor/inicio" element={<h1>Inicio Promotor BCP</h1>} />
         <Route path="/administrador/inicio" element={<h1>Inicio Administrador</h1>} />
 
         {/* Ruta inexistente */}

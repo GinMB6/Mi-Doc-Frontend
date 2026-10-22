@@ -1,0 +1,1309 @@
+.promotor-page {
+  width: 100%;
+  max-width: 1250px;
+  margin: 0 auto;
+  padding: 35px;
+}
+
+.promotor-heading {
+  margin-bottom: 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.promotor-heading span,
+.promotor-section-heading span,
+.promotor-search-copy > div > span,
+.promotor-modal-heading span {
+  color: #7d42bd;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+}
+
+.promotor-heading h1 {
+  margin: 5px 0 6px;
+  color: #33253d;
+  font-size: 27px;
+}
+
+.promotor-heading p {
+  margin: 0;
+  color: #8e8197;
+  font-size: 12px;
+}
+
+.promotor-heading-icon {
+  padding: 11px 14px;
+  border: 1px solid #e9e1ee;
+  border-radius: 11px;
+  background: #fff;
+  color: #7438b6;
+}
+
+.promotor-search-card {
+  margin-bottom: 18px;
+  padding: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 25px;
+  border: 1px solid #e8ddf0;
+  border-radius: 15px;
+  background: #fff;
+}
+
+.promotor-search-copy {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.promotor-search-icon {
+  width: 46px;
+  height: 46px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: #eee4fa;
+  color: #7339b7;
+}
+
+.promotor-search-copy h2 {
+  margin: 3px 0;
+  font-size: 16px;
+}
+
+.promotor-search-copy p {
+  margin: 0;
+  color: #93869c;
+  font-size: 10px;
+}
+
+.promotor-dni-search {
+  min-width: 390px;
+  display: flex;
+  gap: 8px;
+}
+
+.promotor-dni-search.compact {
+  width: min(520px, 100%);
+  min-width: 0;
+}
+
+.promotor-dni-search input {
+  flex: 1;
+  min-width: 0;
+  padding: 11px 12px;
+  border: 1px solid #e2d9e8;
+  border-radius: 9px;
+  outline: none;
+  font-size: 11px;
+}
+
+.promotor-dni-search input:focus {
+  border-color: #9562c9;
+}
+
+.promotor-dni-search button,
+.promotor-primary-button,
+.promotor-table-action {
+  border: 0;
+  background: #7438b6;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.promotor-dni-search button {
+  padding: 0 17px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 9px;
+}
+
+.promotor-summary-grid {
+  margin-bottom: 18px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 13px;
+}
+
+.promotor-summary-grid article {
+  padding: 17px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid #eee7f2;
+  border-radius: 13px;
+  background: #fff;
+  color: #7339b7;
+}
+
+.promotor-summary-grid span,
+.promotor-summary-grid strong {
+  display: block;
+}
+
+.promotor-summary-grid span {
+  color: #978b9e;
+  font-size: 9px;
+}
+
+.promotor-summary-grid strong {
+  margin-top: 3px;
+  color: #3e3146;
+  font-size: 18px;
+}
+
+.promotor-section-card {
+  margin-bottom: 18px;
+  padding: 20px;
+  border: 1px solid #eee7f2;
+  border-radius: 15px;
+  background: #fff;
+}
+
+.promotor-section-heading {
+  margin-bottom: 17px;
+}
+
+.promotor-section-heading h2 {
+  margin: 4px 0 0;
+  font-size: 16px;
+}
+
+.promotor-actions-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.promotor-actions-grid button {
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid #e9e1ee;
+  border-radius: 12px;
+  background: #fff;
+  color: #7438b6;
+  text-align: left;
+  cursor: pointer;
+}
+
+.promotor-actions-grid button div {
+  flex: 1;
+}
+
+.promotor-actions-grid strong,
+.promotor-actions-grid span {
+  display: block;
+}
+
+.promotor-actions-grid strong {
+  color: #403348;
+  font-size: 11px;
+}
+
+.promotor-actions-grid span {
+  margin-top: 3px;
+  color: #9a8ea1;
+  font-size: 9px;
+}
+
+/* CLIENTES */
+
+.promotor-primary-button {
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border-radius: 8px;
+  font-size: 9px;
+}
+
+.promotor-primary-button.large {
+  padding: 12px 18px;
+  font-size: 10px;
+}
+
+.promotor-list-search {
+  width: min(480px, 100%);
+  margin-bottom: 17px;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #e4dce9;
+  border-radius: 9px;
+  color: #95869e;
+}
+
+.promotor-list-search input {
+  width: 100%;
+  padding: 11px 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  font-size: 11px;
+}
+
+.promotor-table-wrapper {
+  overflow-x: auto;
+}
+
+.promotor-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 10px;
+}
+
+.promotor-table th {
+  padding: 11px;
+  background: #faf8fb;
+  color: #817489;
+  text-align: left;
+  font-size: 9px;
+}
+
+.promotor-table td {
+  padding: 12px 11px;
+  border-bottom: 1px solid #f0ebf2;
+}
+
+.promotor-count {
+  min-width: 25px;
+  height: 25px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 20px;
+  background: #eee4fa;
+  color: #7135b7;
+  font-weight: 800;
+}
+
+.promotor-table-action {
+  padding: 8px 10px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  border-radius: 7px;
+  font-size: 8px;
+  white-space: nowrap;
+}
+
+.promotor-empty {
+  padding: 35px;
+  display: grid;
+  place-items: center;
+  gap: 7px;
+  color: #9a8da2;
+  text-align: center;
+}
+
+.promotor-empty strong {
+  color: #55465e;
+  font-size: 11px;
+}
+
+.promotor-empty span {
+  font-size: 9px;
+}
+
+.promotor-empty button {
+  margin-top: 5px;
+  padding: 8px 11px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  border: 0;
+  border-radius: 7px;
+  background: #7438b6;
+  color: #fff;
+  font-size: 8px;
+  font-weight: 700;
+}
+
+/* FORMULARIOS Y MODALES */
+
+.promotor-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  padding: 20px;
+  display: grid;
+  place-items: center;
+  background: rgba(35, 25, 43, 0.42);
+}
+
+.promotor-modal {
+  width: min(650px, 100%);
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 23px;
+  border-radius: 17px;
+  background: #fff;
+}
+
+.promotor-modal-heading {
+  margin-bottom: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.promotor-modal-heading h2 {
+  margin: 4px 0;
+  font-size: 19px;
+}
+
+.promotor-modal-heading p {
+  margin: 0;
+  color: #978a9f;
+  font-size: 10px;
+}
+
+.promotor-modal-heading > button {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #e8e0ec;
+  border-radius: 8px;
+  background: #fff;
+  color: #77677f;
+  cursor: pointer;
+}
+
+.promotor-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 13px;
+}
+
+.promotor-form-grid label {
+  display: grid;
+  gap: 6px;
+  color: #66576f;
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.promotor-form-grid label.full {
+  grid-column: 1 / -1;
+}
+
+.promotor-form-grid input,
+.promotor-form-grid select {
+  width: 100%;
+  padding: 10px 11px;
+  border: 1px solid #e4dce9;
+  border-radius: 8px;
+  background: #fff;
+  outline: none;
+  font-size: 10px;
+}
+
+.promotor-input-icon {
+  padding-left: 10px;
+  display: flex;
+  align-items: center;
+  border: 1px solid #e4dce9;
+  border-radius: 8px;
+  color: #97899f;
+}
+
+.promotor-input-icon input {
+  border: 0;
+}
+
+.promotor-demo-note,
+.promotor-purchase-note {
+  margin-top: 15px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: #f7f2fa;
+  color: #897591;
+  font-size: 8px;
+  line-height: 1.5;
+}
+
+.promotor-modal-actions {
+  margin-top: 18px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.promotor-secondary-button {
+  padding: 10px 14px;
+  border: 1px solid #e1d8e6;
+  border-radius: 8px;
+  background: #fff;
+  color: #776a7f;
+  font-size: 9px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* COMPRA */
+
+.promotor-client-found {
+  margin-top: 15px;
+  padding: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #d6ebdd;
+  border-radius: 10px;
+  background: #f1faf4;
+  color: #287848;
+}
+
+.promotor-client-found span,
+.promotor-client-found strong {
+  display: block;
+}
+
+.promotor-client-found span {
+  font-size: 8px;
+}
+
+.promotor-client-found strong {
+  margin-top: 3px;
+  color: #3d4e43;
+  font-size: 11px;
+}
+
+.promotor-client-found p {
+  margin: 3px 0 0;
+  font-size: 8px;
+}
+
+.promotor-payment-options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 11px;
+}
+
+.promotor-payment-options button {
+  padding: 15px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  border: 1px solid #e6dfea;
+  border-radius: 11px;
+  background: #fff;
+  color: #85758e;
+  text-align: left;
+  cursor: pointer;
+}
+
+.promotor-payment-options strong,
+.promotor-payment-options span {
+  display: block;
+}
+
+.promotor-payment-options strong {
+  color: #493b51;
+  font-size: 11px;
+}
+
+.promotor-payment-options span {
+  margin-top: 3px;
+  color: #95899c;
+  font-size: 8px;
+}
+
+.promotor-payment-options button.selected.paid {
+  border-color: #85c89e;
+  background: #eff9f2;
+  color: #27814a;
+}
+
+.promotor-payment-options button.selected.pending {
+  border-color: #e3bf6d;
+  background: #fff8e8;
+  color: #a16c09;
+}
+
+.promotor-final-action {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.promotor-success-card {
+  width: min(620px, 100%);
+  margin: 80px auto 0;
+  padding: 35px;
+  border: 1px solid #e8dfed;
+  border-radius: 17px;
+  background: #fff;
+  text-align: center;
+}
+
+.promotor-success-icon {
+  width: 68px;
+  height: 68px;
+  margin: 0 auto 14px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #e9f8ee;
+  color: #28804a;
+}
+
+.promotor-success-card > span {
+  color: #7b42b8;
+  font-size: 9px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.promotor-success-card h1 {
+  margin: 7px 0;
+  font-size: 22px;
+}
+
+.promotor-success-card p {
+  color: #84758d;
+  font-size: 10px;
+}
+
+.promotor-success-card small {
+  display: block;
+  margin-top: 14px;
+  color: #a094a7;
+  font-size: 8px;
+}
+
+.promotor-success-actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 9px;
+}
+
+/* CONSULTAS */
+
+.promotor-consultas-toolbar {
+  margin-bottom: 18px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.promotor-consultas-toolbar .promotor-list-search {
+  margin-bottom: 0;
+}
+
+.promotor-filter-group {
+  display: flex;
+  gap: 8px;
+}
+
+.promotor-filter-group select {
+  padding: 10px 30px 10px 10px;
+  border: 1px solid #e4dce9;
+  border-radius: 8px;
+  background: #fff;
+  color: #695b72;
+  outline: none;
+  font-size: 9px;
+}
+
+.promotor-status {
+  padding: 5px 8px;
+  display: inline-block;
+  border-radius: 20px;
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+}
+
+.promotor-status.paid,
+.promotor-status.utilizada {
+  background: #e9f7ee;
+  color: #267848;
+}
+
+.promotor-status.pending {
+  background: #fff4d9;
+  color: #9a690e;
+}
+
+.promotor-status.disponible {
+  background: #eee5fa;
+  color: #6e35ad;
+}
+
+.promotor-status.agendada {
+  background: #e7f1ff;
+  color: #356da9;
+}
+
+.promotor-status.vencida {
+  background: #f7e9eb;
+  color: #a64c59;
+}
+
+.promotor-muted {
+  color: #aaa0af;
+  font-style: italic;
+}
+
+.promotor-row-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.promotor-icon-action {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #e5dce9;
+  border-radius: 7px;
+  background: #fff;
+  color: #7540af;
+  cursor: pointer;
+}
+
+.promotor-detail-client {
+  margin-bottom: 15px;
+  padding: 13px;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  border-radius: 10px;
+  background: #f8f4fb;
+}
+
+.promotor-detail-icon {
+  width: 39px;
+  height: 39px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: #eadcf8;
+  color: #7438b6;
+}
+
+.promotor-detail-client span,
+.promotor-detail-client strong,
+.promotor-detail-client p {
+  display: block;
+}
+
+.promotor-detail-client span {
+  color: #93869b;
+  font-size: 8px;
+}
+
+.promotor-detail-client strong {
+  margin-top: 2px;
+  font-size: 11px;
+}
+
+.promotor-detail-client p {
+  margin: 2px 0 0;
+  color: #8f8297;
+  font-size: 8px;
+}
+
+.promotor-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 9px;
+}
+
+.promotor-detail-grid article {
+  padding: 12px;
+  border: 1px solid #eee7f2;
+  border-radius: 9px;
+  color: #7740b1;
+}
+
+.promotor-detail-grid span,
+.promotor-detail-grid strong {
+  display: block;
+}
+
+.promotor-detail-grid span {
+  margin-top: 7px;
+  color: #978a9f;
+  font-size: 7px;
+}
+
+.promotor-detail-grid strong {
+  margin-top: 2px;
+  color: #493b51;
+  font-size: 9px;
+}
+
+.promotor-acquisition-detail {
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 9px;
+  background: #faf8fb;
+}
+
+.promotor-acquisition-detail span,
+.promotor-acquisition-detail strong {
+  display: block;
+}
+
+.promotor-acquisition-detail span {
+  color: #988b9f;
+  font-size: 7px;
+}
+
+.promotor-acquisition-detail strong {
+  margin-top: 3px;
+  font-size: 10px;
+}
+
+.promotor-acquisition-detail p {
+  margin: 3px 0 0;
+  color: #8d8095;
+  font-size: 8px;
+}
+
+/* AGENDAMIENTO */
+
+.promotor-booking-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 285px;
+  gap: 18px;
+  align-items: start;
+}
+
+.promotor-step-heading {
+  margin-bottom: 17px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.promotor-step-number {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #7539b7;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.promotor-step-heading span {
+  color: #8c7c96;
+  font-size: 7px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.promotor-step-heading h2 {
+  margin: 2px 0 0;
+  font-size: 14px;
+}
+
+.promotor-identify-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 9px;
+  align-items: end;
+}
+
+.promotor-identify-grid label {
+  display: grid;
+  gap: 6px;
+  color: #6e6076;
+  font-size: 8px;
+  font-weight: 700;
+}
+
+.promotor-identify-grid input {
+  padding: 10px;
+  border: 1px solid #e2d9e7;
+  border-radius: 8px;
+  outline: none;
+  font-size: 9px;
+}
+
+.promotor-identify-grid .promotor-primary-button {
+  height: 36px;
+}
+
+.promotor-choice-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 9px;
+}
+
+.promotor-choice-grid.two {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.promotor-choice-grid button {
+  padding: 13px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  border: 1px solid #e8e0ed;
+  border-radius: 10px;
+  background: #fff;
+  color: #806f8a;
+  text-align: left;
+  cursor: pointer;
+}
+
+.promotor-choice-grid button div {
+  flex: 1;
+}
+
+.promotor-choice-grid strong,
+.promotor-choice-grid span {
+  display: block;
+}
+
+.promotor-choice-grid strong {
+  color: #4c3d54;
+  font-size: 9px;
+}
+
+.promotor-choice-grid span {
+  margin-top: 3px;
+  color: #9a8da1;
+  font-size: 7px;
+}
+
+.promotor-choice-grid button.selected {
+  border-color: #9c6dcc;
+  background: #f5effb;
+  color: #7338b5;
+}
+
+.promotor-doctor-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 9px;
+}
+
+.promotor-doctor-grid > button {
+  padding: 13px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid #e8e0ed;
+  border-radius: 10px;
+  background: #fff;
+  text-align: left;
+  cursor: pointer;
+}
+
+.promotor-doctor-grid > button > div:nth-child(2) {
+  flex: 1;
+}
+
+.promotor-doctor-grid > button.selected {
+  border-color: #9c6dcc;
+  background: #f5effb;
+}
+
+.promotor-doctor-avatar {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #eee5f8;
+  color: #753bb5;
+}
+
+.promotor-doctor-grid strong,
+.promotor-doctor-grid span,
+.promotor-doctor-grid small {
+  display: block;
+}
+
+.promotor-doctor-grid strong {
+  color: #47394f;
+  font-size: 9px;
+}
+
+.promotor-doctor-grid span {
+  margin-top: 2px;
+  color: #7750a1;
+  font-size: 7px;
+}
+
+.promotor-doctor-grid small {
+  margin-top: 2px;
+  color: #a093a7;
+  font-size: 7px;
+}
+
+/* DISPONIBILIDAD POR FECHAS */
+
+.promotor-doctor-schedule-info {
+  margin-bottom: 15px;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: 10px;
+  background: #f6f0fb;
+  color: #7540b0;
+}
+
+.promotor-doctor-schedule-info div {
+  flex: 1;
+}
+
+.promotor-doctor-schedule-info strong,
+.promotor-doctor-schedule-info span {
+  display: block;
+}
+
+.promotor-doctor-schedule-info strong {
+  color: #55405f;
+  font-size: 9px;
+}
+
+.promotor-doctor-schedule-info span {
+  margin-top: 3px;
+  color: #8d7d96;
+  font-size: 7px;
+  line-height: 1.5;
+}
+
+.promotor-availability-list {
+  display: grid;
+  gap: 10px;
+}
+
+.promotor-availability-day {
+  padding: 13px;
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 16px;
+  align-items: center;
+  border: 1px solid #ebe3ef;
+  border-radius: 11px;
+  background: #fff;
+  transition: 0.15s ease;
+}
+
+.promotor-availability-day.selected {
+  border-color: #a477ce;
+  background: #fbf8fd;
+}
+
+.promotor-availability-date {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.promotor-date-box {
+  width: 47px;
+  height: 52px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  border-radius: 9px;
+  background: #eee4f8;
+}
+
+.promotor-date-box span,
+.promotor-date-box strong {
+  display: block;
+}
+
+.promotor-date-box span {
+  color: #8755b8;
+  font-size: 7px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.promotor-date-box strong {
+  margin-top: 1px;
+  color: #63319a;
+  font-size: 17px;
+}
+
+.promotor-availability-date > div:last-child > strong,
+.promotor-availability-date > div:last-child > span {
+  display: block;
+}
+
+.promotor-availability-date > div:last-child > strong {
+  color: #4d3f55;
+  font-size: 9px;
+}
+
+.promotor-availability-date > div:last-child > span {
+  margin-top: 3px;
+  color: #9b8da2;
+  font-size: 7px;
+}
+
+.promotor-availability-times {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.promotor-availability-times button {
+  padding: 8px 10px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  border: 1px solid #e4dbe9;
+  border-radius: 7px;
+  background: #fff;
+  color: #75667e;
+  font-size: 8px;
+  cursor: pointer;
+  transition: 0.15s ease;
+}
+
+.promotor-availability-times button:hover {
+  border-color: #a77bd0;
+  color: #7138aa;
+}
+
+.promotor-availability-times button.selected {
+  border-color: #7438b6;
+  background: #7438b6;
+  color: #fff;
+}
+
+/* RESUMEN DE AGENDAMIENTO */
+
+.promotor-booking-summary {
+  position: sticky;
+  top: 20px;
+  padding: 19px;
+  border: 1px solid #e8e0ed;
+  border-radius: 14px;
+  background: #fff;
+}
+
+.promotor-booking-summary > span {
+  color: #7b41b9;
+  font-size: 8px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.promotor-booking-summary h2 {
+  margin: 4px 0 16px;
+  font-size: 15px;
+}
+
+.promotor-summary-line {
+  padding: 8px 0;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  border-bottom: 1px solid #f0ebf2;
+}
+
+.promotor-summary-line span {
+  color: #998ca0;
+  font-size: 7px;
+}
+
+.promotor-summary-line strong {
+  color: #4e4056;
+  font-size: 8px;
+  text-align: right;
+}
+
+.promotor-booking-summary .promotor-primary-button {
+  width: 100%;
+  margin-top: 17px;
+}
+
+.promotor-booking-summary .promotor-primary-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.promotor-back-button {
+  width: 100%;
+  margin-top: 7px;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  border: 0;
+  background: transparent;
+  color: #8d7c96;
+  font-size: 8px;
+  cursor: pointer;
+}
+
+/* CONFIRMACIÓN DE AGENDAMIENTO */
+
+.promotor-confirmation-summary {
+  margin: 20px 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  text-align: left;
+}
+
+.promotor-confirmation-summary > div {
+  padding: 11px;
+  border: 1px solid #ece5ef;
+  border-radius: 9px;
+  color: #7740b1;
+}
+
+.promotor-confirmation-summary span,
+.promotor-confirmation-summary strong {
+  display: block;
+}
+
+.promotor-confirmation-summary span {
+  margin-top: 5px;
+  color: #988ba0;
+  font-size: 7px;
+}
+
+.promotor-confirmation-summary strong {
+  margin-top: 2px;
+  color: #4c3e54;
+  font-size: 8px;
+}
+
+.promotor-email-message {
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: 9px;
+  background: #f4eff9;
+  color: #7540b0;
+  text-align: left;
+}
+
+.promotor-email-message strong,
+.promotor-email-message span {
+  display: block;
+}
+
+.promotor-email-message strong {
+  color: #53405e;
+  font-size: 8px;
+}
+
+.promotor-email-message span {
+  margin-top: 2px;
+  color: #8d7e96;
+  font-size: 7px;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 1050px) {
+  .promotor-booking-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .promotor-booking-summary {
+    position: static;
+  }
+}
+
+@media (max-width: 900px) {
+  .promotor-summary-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .promotor-search-card {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .promotor-dni-search {
+    min-width: 0;
+  }
+}
+
+@media (max-width: 750px) {
+  .promotor-consultas-toolbar {
+    flex-direction: column;
+  }
+
+  .promotor-filter-group {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .promotor-detail-grid,
+  .promotor-choice-grid,
+  .promotor-choice-grid.two,
+  .promotor-doctor-grid,
+  .promotor-confirmation-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .promotor-identify-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  .promotor-availability-day {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 650px) {
+  .promotor-page {
+    padding: 75px 16px 25px;
+  }
+
+  .promotor-heading {
+    flex-direction: column;
+  }
+
+  .promotor-summary-grid,
+  .promotor-actions-grid,
+  .promotor-form-grid,
+  .promotor-payment-options {
+    grid-template-columns: 1fr;
+  }
+
+  .promotor-form-grid label.full {
+    grid-column: auto;
+  }
+
+  .promotor-dni-search,
+  .promotor-success-actions {
+    flex-direction: column;
+  }
+
+  .promotor-dni-search button {
+    padding: 11px;
+    justify-content: center;
+  }
+}
