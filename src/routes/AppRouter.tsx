@@ -9,6 +9,7 @@ import LoginPage from '../auth/pages/LoginPage'
 import RegistroPage from '../auth/pages/RegistroPage'
 import ClienteInicioPage from '../roles/cliente/pages/ClienteInicioPage'
 import ClienteConsultasPage from '../roles/cliente/pages/ClienteConsultasPage'
+import ClienteConsultaDetallePage from '../roles/cliente/pages/ClienteConsultaDetallePage'
 
 function AppRouter() {
   return (
@@ -65,6 +66,11 @@ function AppRouter() {
         <Route
           path="*"
           element={<Navigate to="/login" replace />}
+        />
+
+        <Route
+           path="/cliente/consultas/:id"
+           element={<ClienteConsultaDetallePage />}
         />
 
       </Routes>

@@ -7,11 +7,14 @@ import {
   Search,
   Stethoscope,
 } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 
 import ClienteLayout from '../components/ClienteLayout'
 import '../styles/ClienteConsultasPage.css'
 
 function ClienteConsultasPage() {
+  const navigate = useNavigate()
+
   return (
     <ClienteLayout>
       <div className="consultas-page">
@@ -70,6 +73,7 @@ function ClienteConsultasPage() {
         <section className="consultas-list">
           {/* ==========================================
               CASO 1: SIN ESPECIALIDAD Y SIN CITA
+              DATOS TEMPORALES SOLO PARA EL FRONTEND
              ========================================== */}
 
           <article className="consulta-card">
@@ -159,6 +163,9 @@ function ClienteConsultasPage() {
                 <button
                   type="button"
                   className="consulta-secondary-button"
+                  onClick={() =>
+                    navigate('/cliente/consultas/001')
+                  }
                 >
                   Ver detalle
                 </button>
@@ -176,6 +183,7 @@ function ClienteConsultasPage() {
 
           {/* ==========================================
               CASO 2: CON ESPECIALIDAD, SIN CITA
+              DATOS TEMPORALES SOLO PARA EL FRONTEND
              ========================================== */}
 
           <article className="consulta-card">
@@ -262,6 +270,9 @@ function ClienteConsultasPage() {
                 <button
                   type="button"
                   className="consulta-secondary-button"
+                  onClick={() =>
+                    navigate('/cliente/consultas/002')
+                  }
                 >
                   Ver detalle
                 </button>
@@ -279,6 +290,7 @@ function ClienteConsultasPage() {
 
           {/* ==========================================
               CASO 3: CONSULTA CON CITA
+              DATOS TEMPORALES SOLO PARA EL FRONTEND
              ========================================== */}
 
           <article className="consulta-card">
@@ -391,6 +403,9 @@ function ClienteConsultasPage() {
                 <button
                   type="button"
                   className="consulta-secondary-button"
+                  onClick={() =>
+                    navigate('/cliente/consultas/003')
+                  }
                 >
                   Ver detalle
                 </button>
