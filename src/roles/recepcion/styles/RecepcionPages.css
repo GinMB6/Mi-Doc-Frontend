@@ -531,3 +531,318 @@
     justify-content: center;
   }
 }
+
+/* CONSULTAS Y CITAS */
+
+.recepcion-consultas-toolbar {
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.recepcion-filter-group {
+  display: flex;
+  gap: 8px;
+}
+
+.recepcion-filter-group select {
+  padding: 10px 32px 10px 11px;
+  border: 1px solid #e4dce9;
+  border-radius: 9px;
+  background: #fff;
+  color: #685b71;
+  outline: none;
+  font-size: 9px;
+  cursor: pointer;
+}
+
+.recepcion-filter-group select:focus {
+  border-color: #9562c9;
+}
+
+.recepcion-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.recepcion-icon-button {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #e4d9ec;
+  border-radius: 7px;
+  background: #f8f3fc;
+  color: #7135b7;
+  cursor: pointer;
+}
+
+.recepcion-icon-button:hover {
+  background: #eee4fa;
+}
+
+.recepcion-pay-button {
+  padding: 8px 10px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  border: 0;
+  border-radius: 7px;
+  background: #7438b6;
+  color: #fff;
+  font-size: 8px;
+  font-weight: 800;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.recepcion-consulta-status,
+.recepcion-cita-status {
+  width: fit-content;
+  padding: 5px 8px;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 20px;
+  font-size: 8px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.recepcion-consulta-status.disponible {
+  background: #e8f1ff;
+  color: #376fb4;
+}
+
+.recepcion-consulta-status.agendada,
+.recepcion-cita-status.agendada {
+  background: #fff1d7;
+  color: #a36d08;
+}
+
+.recepcion-consulta-status.utilizada,
+.recepcion-cita-status.atendida {
+  background: #e5f7ec;
+  color: #23804a;
+}
+
+.recepcion-consulta-status.vencida,
+.recepcion-cita-status.cancelada,
+.recepcion-cita-status.no_asistio {
+  background: #fde8e8;
+  color: #b64040;
+}
+
+.recepcion-detail-grid {
+  margin-bottom: 18px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 9px;
+}
+
+.recepcion-detail-grid > div {
+  padding: 12px;
+  border: 1px solid #eee8f1;
+  border-radius: 9px;
+}
+
+.recepcion-detail-grid > div > span:first-child,
+.recepcion-detail-grid > div > strong {
+  display: block;
+}
+
+.recepcion-detail-grid > div > span:first-child {
+  margin-bottom: 4px;
+  color: #998ca0;
+  font-size: 8px;
+}
+
+.recepcion-detail-grid > div > strong {
+  color: #493c51;
+  font-size: 10px;
+}
+
+.recepcion-modal.small {
+  width: min(470px, 100%);
+}
+
+.recepcion-modal-primary {
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 0;
+  border-radius: 8px;
+  background: #7438b6;
+  color: #fff;
+  font-size: 9px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.recepcion-payment-confirm {
+  text-align: center;
+}
+
+.recepcion-payment-confirm-icon {
+  width: 55px;
+  height: 55px;
+  margin: 0 auto 12px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #eee4fa;
+  color: #7135b7;
+}
+
+.recepcion-payment-confirm p {
+  margin: 0;
+  color: #62546a;
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+.recepcion-payment-warning {
+  margin-top: 14px;
+  padding: 10px;
+  border-radius: 8px;
+  background: #fff6df;
+  color: #8d6819;
+  font-size: 8px;
+  line-height: 1.5;
+}
+
+.recepcion-modal-actions {
+  margin-top: 18px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.recepcion-secondary-button {
+  padding: 10px 14px;
+  border: 1px solid #e1d8e6;
+  border-radius: 8px;
+  background: #fff;
+  color: #776a7f;
+  font-size: 9px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.recepcion-date-cell {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #7c6e85;
+}
+
+.recepcion-date-cell span,
+.recepcion-date-cell strong {
+  display: block;
+}
+
+.recepcion-date-cell strong {
+  margin-bottom: 2px;
+  color: #47394f;
+}
+
+.recepcion-sede-cell {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.recepcion-cita-patient {
+  margin-bottom: 14px;
+  padding: 13px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: 10px;
+  background: #faf7fc;
+}
+
+.recepcion-patient-avatar {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #eee2fb;
+  color: #7237b5;
+}
+
+.recepcion-cita-patient span,
+.recepcion-cita-patient strong {
+  display: block;
+}
+
+.recepcion-cita-patient span {
+  color: #998ca0;
+  font-size: 8px;
+}
+
+.recepcion-cita-patient strong {
+  margin-top: 2px;
+  font-size: 11px;
+}
+
+.recepcion-cita-patient p {
+  margin: 2px 0 0;
+  color: #96899e;
+  font-size: 8px;
+}
+
+.recepcion-cita-note {
+  padding: 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  border-radius: 9px;
+  background: #f6f0fa;
+  color: #744c8e;
+}
+
+.recepcion-cita-note strong {
+  display: block;
+  font-size: 9px;
+}
+
+.recepcion-cita-note p {
+  margin: 3px 0 0;
+  font-size: 8px;
+  line-height: 1.5;
+}
+
+@media (max-width: 850px) {
+  .recepcion-consultas-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .recepcion-filter-group {
+    flex-wrap: wrap;
+  }
+
+  .recepcion-filter-group select {
+    flex: 1;
+  }
+}
+
+@media (max-width: 650px) {
+  .recepcion-detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .recepcion-modal-actions {
+    flex-direction: column-reverse;
+  }
+
+  .recepcion-modal-actions button {
+    width: 100%;
+  }
+}

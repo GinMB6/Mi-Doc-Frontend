@@ -7,7 +7,8 @@ import {
 
 import LoginPage from '../auth/pages/LoginPage'
 import RegistroPage from '../auth/pages/RegistroPage'
-
+import RecepcionConsultasPage from '../roles/recepcion/pages/RecepcionConsultasPage'
+import RecepcionCitasPage from '../roles/recepcion/pages/RecepcionCitasPage'
 import ClienteInicioPage from '../roles/cliente/pages/ClienteInicioPage'
 import ClienteConsultasPage from '../roles/cliente/pages/ClienteConsultasPage'
 import ClienteConsultaDetallePage from '../roles/cliente/pages/ClienteConsultaDetallePage'
@@ -46,7 +47,9 @@ function AppRouter() {
         {/* Recepción */}
         <Route path="/recepcion/inicio" element={<RecepcionInicioPage />} />
         <Route path="/recepcion/clientes" element={<RecepcionClientesPage />} />
-       
+        <Route path="/recepcion/consultas" element={<RecepcionConsultasPage />} />
+        <Route path="/recepcion/citas" element={<RecepcionCitasPage />} />
+        
         {/* Perfiles pendientes */}
         <Route path="/promotor/inicio" element={<h1>Inicio Promotor BCP</h1>} />
         <Route path="/administrador/inicio" element={<h1>Inicio Administrador</h1>} />
