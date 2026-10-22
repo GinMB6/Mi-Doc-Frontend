@@ -10,6 +10,7 @@ import {
   Clock3,
   Mail,
   MapPin,
+  RefreshCw,
   Stethoscope,
   UserRound,
 } from 'lucide-react'
@@ -41,15 +42,26 @@ type HorarioDemo = {
   disponible: boolean
 }
 
+type CitaActualDemo = {
+  consultaId: string
+  especialidad: string
+  medico: string
+  sede: string
+  fecha: string
+  hora: string
+  duracion: number
+  reprogramacionesCliente: number
+}
+
 /*
  * DATOS TEMPORALES PARA EL DISEÑO DEL FRONTEND.
  *
  * Cuando conectemos Flask:
- * - los médicos vendrán de la base de datos;
- * - los horarios dependerán de la programación mensual;
- * - la duración vendrá de la especialidad/consulta;
- * - los bloques ocupados se calcularán en backend;
- * - React NO decidirá la disponibilidad real.
+ * - médicos, fechas y horarios vendrán del backend;
+ * - React no decidirá disponibilidad real;
+ * - la cita actual también vendrá de la BD;
+ * - Flask validará nuevamente antes de agendar/reprogramar;
+ * - Flask registrará el cambio y enviará el correo.
  */
 
 const medicosDemo: MedicoDemo[] = [
@@ -139,16 +151,40 @@ const horariosDemo: HorarioDemo[] = [
   { hora: '5:30 p. m.', disponible: false },
 ]
 
+const citasActualesDemo: Record<string, CitaActualDemo> = {
+  '003': {
+    consultaId: '003',
+    especialidad: 'Cardiología',
+    medico: 'Dr. Carlos Ramírez',
+    sede: 'Pro',
+    fecha: '28/10/2026',
+    hora: '10:30 a. m.',
+    duracion: 30,
+    reprogramacionesCliente: 1,
+  },
+}
+
 function ClienteDisponibilidadPage() {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
 
   const consultaId = searchParams.get('consulta')
+  const modo = searchParams.get('modo')
 
-  const [especialidad, setEspecialidad] =
-    useState('Dermatología')
+  const esReprogramacion = modo === 'reprogramar'
 
-  const [sede, setSede] = useState('Pro')
+  const citaActual =
+    esReprogramacion && consultaId
+      ? citasActualesDemo[consultaId]
+      : null
+
+  const [especialidad, setEspecialidad] = useState(
+    citaActual?.especialidad ?? 'Dermatología',
+  )
+
+  const [sede, setSede] = useState(
+    citaActual?.sede ?? 'Pro',
+  )
 
   const [medicoSeleccionado, setMedicoSeleccionado] =
     useState<number>(1)
@@ -199,15 +235,20 @@ function ClienteDisponibilidadPage() {
 
   const confirmarCita = () => {
     /*
-     * TEMPORAL:
-     * todavía NO se registra una cita real.
+     * TEMPORAL.
      *
-     * Con Flask:
-     * 1. volveremos a validar disponibilidad;
-     * 2. registraremos la cita;
-     * 3. registraremos la notificación;
-     * 4. enviaremos el correo;
-     * 5. recién entonces mostraremos el éxito.
+     * AGENDAMIENTO:
+     * Flask validará disponibilidad, registrará la cita,
+     * registrará la notificación y enviará el correo.
+     *
+     * REPROGRAMACIÓN:
+     * Flask volverá a validar disponibilidad,
+     * registrará la reprogramación con causa CLIENTE,
+     * actualizará la cita y consumirá 1 de las
+     * 2 reprogramaciones gratuitas del cliente.
+     *
+     * Si el cambio fuera originado por la CLÍNICA,
+     * NO consumiría una reprogramación del cliente.
      */
 
     setCitaConfirmada(true)
@@ -215,7 +256,7 @@ function ClienteDisponibilidadPage() {
 
   /*
    * ======================================================
-   * CITA CONFIRMADA
+   * ÉXITO
    * ======================================================
    */
 
@@ -230,14 +271,21 @@ function ClienteDisponibilidadPage() {
               </div>
 
               <span className="cita-exito-eyebrow">
-                Agendamiento completado
+                {esReprogramacion
+                  ? 'Reprogramación completada'
+                  : 'Agendamiento completado'}
               </span>
 
-              <h1>¡Tu cita ha sido agendada!</h1>
+              <h1>
+                {esReprogramacion
+                  ? '¡Tu cita ha sido reprogramada!'
+                  : '¡Tu cita ha sido agendada!'}
+              </h1>
 
               <p className="cita-exito-description">
-                Tu cita médica quedó registrada
-                correctamente.
+                {esReprogramacion
+                  ? 'Los nuevos datos de tu cita quedaron registrados correctamente.'
+                  : 'Tu cita médica quedó registrada correctamente.'}
               </p>
 
               <div className="cita-exito-resumen">
@@ -282,6 +330,19 @@ function ClienteDisponibilidadPage() {
                     {medicoActual.duracion} minutos
                   </strong>
                 </div>
+
+                {esReprogramacion && citaActual && (
+                  <div className="exito-resumen-row">
+                    <span>Reprogramaciones</span>
+                    <strong>
+                      {Math.min(
+                        citaActual.reprogramacionesCliente + 1,
+                        2,
+                      )}{' '}
+                      de 2 utilizadas
+                    </strong>
+                  </div>
+                )}
               </div>
 
               <div className="cita-email-notice">
@@ -293,8 +354,9 @@ function ClienteDisponibilidadPage() {
                   </strong>
 
                   <p>
-                    Recibirás un mensaje de confirmación
-                    con todos los datos de tu cita.
+                    {esReprogramacion
+                      ? 'Recibirás un mensaje con la confirmación del cambio, incluyendo la fecha y hora anterior y los nuevos datos de tu cita.'
+                      : 'Recibirás un mensaje de confirmación con todos los datos de tu cita.'}
                   </p>
                 </div>
               </div>
@@ -341,21 +403,32 @@ function ClienteDisponibilidadPage() {
           <section className="disponibilidad-heading">
             <div>
               <span className="disponibilidad-eyebrow">
-                {consultaId
-                  ? `Agendando consulta #${consultaId}`
-                  : 'Disponibilidad médica'}
+                {esReprogramacion
+                  ? `Reprogramando consulta #${consultaId ?? ''}`
+                  : consultaId
+                    ? `Agendando consulta #${consultaId}`
+                    : 'Disponibilidad médica'}
               </span>
 
-              <h1>Confirma tu cita</h1>
+              <h1>
+                {esReprogramacion
+                  ? 'Confirma la reprogramación'
+                  : 'Confirma tu cita'}
+              </h1>
 
               <p>
-                Revisa cuidadosamente los datos antes de
-                confirmar el agendamiento.
+                {esReprogramacion
+                  ? 'Compara tu cita actual con la nueva selección antes de confirmar el cambio.'
+                  : 'Revisa cuidadosamente los datos antes de confirmar el agendamiento.'}
               </p>
             </div>
 
             <div className="disponibilidad-heading-icon">
-              <CheckCircle2 size={30} />
+              {esReprogramacion ? (
+                <RefreshCw size={30} />
+              ) : (
+                <CheckCircle2 size={30} />
+              )}
             </div>
           </section>
 
@@ -406,13 +479,25 @@ function ClienteDisponibilidadPage() {
             <div className="confirmacion-card">
               <div className="confirmacion-card-header">
                 <div className="confirmacion-header-icon">
-                  <CalendarDays size={24} />
+                  {esReprogramacion ? (
+                    <RefreshCw size={24} />
+                  ) : (
+                    <CalendarDays size={24} />
+                  )}
                 </div>
 
                 <div>
-                  <span>Resumen del agendamiento</span>
+                  <span>
+                    {esReprogramacion
+                      ? 'Resumen de la reprogramación'
+                      : 'Resumen del agendamiento'}
+                  </span>
 
-                  <h2>Tu próxima cita médica</h2>
+                  <h2>
+                    {esReprogramacion
+                      ? 'Revisa el cambio de tu cita'
+                      : 'Tu próxima cita médica'}
+                  </h2>
 
                   <p>
                     Verifica que todos los datos sean
@@ -421,76 +506,183 @@ function ClienteDisponibilidadPage() {
                 </div>
               </div>
 
-              <div className="confirmacion-data-grid">
-                {consultaId && (
-                  <div className="confirmacion-data-item">
-                    <span>Consulta</span>
-                    <strong>#{consultaId}</strong>
+              {esReprogramacion && citaActual ? (
+                <>
+                  <div className="reprogramacion-comparacion">
+                    <div className="reprogramacion-cita-box actual">
+                      <span className="reprogramacion-box-label">
+                        Cita actual
+                      </span>
+
+                      <h3>{citaActual.especialidad}</h3>
+
+                      <div>
+                        <span>Médico</span>
+                        <strong>{citaActual.medico}</strong>
+                      </div>
+
+                      <div>
+                        <span>Sede</span>
+                        <strong>
+                          Sede {citaActual.sede}
+                        </strong>
+                      </div>
+
+                      <div>
+                        <span>Fecha</span>
+                        <strong>{citaActual.fecha}</strong>
+                      </div>
+
+                      <div>
+                        <span>Hora</span>
+                        <strong>{citaActual.hora}</strong>
+                      </div>
+                    </div>
+
+                    <div className="reprogramacion-arrow">
+                      <ArrowRight size={25} />
+                    </div>
+
+                    <div className="reprogramacion-cita-box nueva">
+                      <span className="reprogramacion-box-label">
+                        Nueva cita
+                      </span>
+
+                      <h3>{especialidad}</h3>
+
+                      <div>
+                        <span>Médico</span>
+                        <strong>
+                          {medicoActual.nombre}
+                        </strong>
+                      </div>
+
+                      <div>
+                        <span>Sede</span>
+                        <strong>Sede {sede}</strong>
+                      </div>
+
+                      <div>
+                        <span>Fecha</span>
+                        <strong>
+                          {fechaActual.diaSemana}{' '}
+                          {fechaActual.dia} de noviembre de
+                          2026
+                        </strong>
+                      </div>
+
+                      <div>
+                        <span>Hora</span>
+                        <strong>
+                          {horaSeleccionada}
+                        </strong>
+                      </div>
+                    </div>
                   </div>
-                )}
 
-                <div className="confirmacion-data-item">
-                  <span>Especialidad</span>
-                  <strong>{especialidad}</strong>
-                </div>
+                  <div className="reprogramacion-warning">
+                    <RefreshCw size={18} />
 
-                <div className="confirmacion-data-item">
-                  <span>Médico</span>
-                  <strong>{medicoActual.nombre}</strong>
-                </div>
+                    <div>
+                      <strong>
+                        Esta reprogramación utilizará uno de
+                        tus cambios gratuitos
+                      </strong>
 
-                <div className="confirmacion-data-item">
-                  <span>Sede</span>
-                  <strong>Sede {sede}</strong>
-                </div>
+                      <p>
+                        Actualmente tienes{' '}
+                        {citaActual.reprogramacionesCliente}{' '}
+                        de 2 reprogramaciones utilizadas.
+                        Después de confirmar tendrás{' '}
+                        {Math.min(
+                          citaActual.reprogramacionesCliente +
+                            1,
+                          2,
+                        )}{' '}
+                        de 2 utilizadas.
+                      </p>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="confirmacion-data-grid">
+                    {consultaId && (
+                      <div className="confirmacion-data-item">
+                        <span>Consulta</span>
+                        <strong>#{consultaId}</strong>
+                      </div>
+                    )}
 
-                <div className="confirmacion-data-item">
-                  <span>Fecha</span>
-                  <strong>
-                    {fechaActual.diaSemana}{' '}
-                    {fechaActual.dia} de noviembre de 2026
-                  </strong>
-                </div>
+                    <div className="confirmacion-data-item">
+                      <span>Especialidad</span>
+                      <strong>{especialidad}</strong>
+                    </div>
 
-                <div className="confirmacion-data-item">
-                  <span>Hora</span>
-                  <strong>{horaSeleccionada}</strong>
-                </div>
+                    <div className="confirmacion-data-item">
+                      <span>Médico</span>
+                      <strong>
+                        {medicoActual.nombre}
+                      </strong>
+                    </div>
 
-                <div className="confirmacion-data-item">
-                  <span>Duración</span>
-                  <strong>
-                    {medicoActual.duracion} minutos
-                  </strong>
-                </div>
-              </div>
+                    <div className="confirmacion-data-item">
+                      <span>Sede</span>
+                      <strong>Sede {sede}</strong>
+                    </div>
 
-              <div className="confirmacion-medico-box">
-                <div className="medico-avatar">
-                  {medicoActual.iniciales}
-                </div>
+                    <div className="confirmacion-data-item">
+                      <span>Fecha</span>
+                      <strong>
+                        {fechaActual.diaSemana}{' '}
+                        {fechaActual.dia} de noviembre de 2026
+                      </strong>
+                    </div>
 
-                <div>
-                  <span>Serás atendido por</span>
+                    <div className="confirmacion-data-item">
+                      <span>Hora</span>
+                      <strong>{horaSeleccionada}</strong>
+                    </div>
 
-                  <strong>{medicoActual.nombre}</strong>
+                    <div className="confirmacion-data-item">
+                      <span>Duración</span>
+                      <strong>
+                        {medicoActual.duracion} minutos
+                      </strong>
+                    </div>
+                  </div>
 
-                  <p>
-                    {especialidad} · Sede {sede}
-                  </p>
-                </div>
-              </div>
+                  <div className="confirmacion-medico-box">
+                    <div className="medico-avatar">
+                      {medicoActual.iniciales}
+                    </div>
+
+                    <div>
+                      <span>Serás atendido por</span>
+                      <strong>
+                        {medicoActual.nombre}
+                      </strong>
+
+                      <p>
+                        {especialidad} · Sede {sede}
+                      </p>
+                    </div>
+                  </div>
+                </>
+              )}
 
               <div className="confirmacion-email-box">
                 <Mail size={19} />
 
                 <div>
-                  <strong>Confirmación por correo</strong>
+                  <strong>
+                    Confirmación por correo
+                  </strong>
 
                   <p>
-                    Después de confirmar tu cita recibirás
-                    un correo electrónico con los datos del
-                    agendamiento.
+                    {esReprogramacion
+                      ? 'Después de confirmar recibirás un correo con la cita anterior y los nuevos datos de tu atención.'
+                      : 'Después de confirmar tu cita recibirás un correo electrónico con los datos del agendamiento.'}
                   </p>
                 </div>
               </div>
@@ -510,8 +702,15 @@ function ClienteDisponibilidadPage() {
                   className="confirmacion-submit-button"
                   onClick={confirmarCita}
                 >
-                  <Check size={16} />
-                  Confirmar cita
+                  {esReprogramacion ? (
+                    <RefreshCw size={16} />
+                  ) : (
+                    <Check size={16} />
+                  )}
+
+                  {esReprogramacion
+                    ? 'Confirmar reprogramación'
+                    : 'Confirmar cita'}
                 </button>
               </div>
             </div>
@@ -533,23 +732,63 @@ function ClienteDisponibilidadPage() {
         <section className="disponibilidad-heading">
           <div>
             <span className="disponibilidad-eyebrow">
-              {consultaId
-                ? `Agendando consulta #${consultaId}`
-                : 'Disponibilidad médica'}
+              {esReprogramacion
+                ? `Reprogramando consulta #${consultaId ?? ''}`
+                : consultaId
+                  ? `Agendando consulta #${consultaId}`
+                  : 'Disponibilidad médica'}
             </span>
 
-            <h1>Encuentra tu próxima cita</h1>
+            <h1>
+              {esReprogramacion
+                ? 'Elige una nueva fecha para tu cita'
+                : 'Encuentra tu próxima cita'}
+            </h1>
 
             <p>
-              Consulta los médicos disponibles y selecciona
-              la fecha y horario que prefieras.
+              {esReprogramacion
+                ? 'Selecciona una nueva opción disponible para reemplazar tu cita actual.'
+                : 'Consulta los médicos disponibles y selecciona la fecha y horario que prefieras.'}
             </p>
           </div>
 
           <div className="disponibilidad-heading-icon">
-            <CalendarDays size={30} />
+            {esReprogramacion ? (
+              <RefreshCw size={30} />
+            ) : (
+              <CalendarDays size={30} />
+            )}
           </div>
         </section>
+
+        {esReprogramacion && citaActual && (
+          <section className="cita-actual-banner">
+            <div className="cita-actual-banner-icon">
+              <CalendarDays size={21} />
+            </div>
+
+            <div className="cita-actual-banner-content">
+              <span>Tu cita actual</span>
+
+              <strong>
+                {citaActual.especialidad} ·{' '}
+                {citaActual.medico}
+              </strong>
+
+              <p>
+                {citaActual.fecha} · {citaActual.hora} ·
+                Sede {citaActual.sede}
+              </p>
+            </div>
+
+            <div className="cita-actual-banner-counter">
+              <span>Reprogramaciones</span>
+              <strong>
+                {citaActual.reprogramacionesCliente} de 2
+              </strong>
+            </div>
+          </section>
+        )}
 
         <section className="disponibilidad-steps">
           <div className="disponibilidad-step active">
@@ -591,8 +830,6 @@ function ClienteDisponibilidadPage() {
         </section>
 
         <div className="disponibilidad-content">
-          {/* ESPECIALIDAD Y SEDE */}
-
           <aside className="disponibilidad-filters-card">
             <div className="disponibilidad-filter-block">
               <div className="filter-title">
@@ -662,7 +899,9 @@ function ClienteDisponibilidadPage() {
               <Clock3 size={18} />
 
               <div>
-                <strong>Duración de la consulta</strong>
+                <strong>
+                  Duración de la consulta
+                </strong>
 
                 <p>
                   Cada atención de {especialidad} tiene una
@@ -690,8 +929,6 @@ function ClienteDisponibilidadPage() {
               </div>
             </div>
           </aside>
-
-          {/* MÉDICOS */}
 
           <section className="medicos-panel">
             <div className="panel-heading">
@@ -727,8 +964,12 @@ function ClienteDisponibilidadPage() {
                       </div>
 
                       <div className="medico-info">
-                        <strong>{medico.nombre}</strong>
-                        <span>{medico.especialidad}</span>
+                        <strong>
+                          {medico.nombre}
+                        </strong>
+                        <span>
+                          {medico.especialidad}
+                        </span>
                         <small>
                           Sede {medico.sede}
                         </small>
@@ -750,7 +991,9 @@ function ClienteDisponibilidadPage() {
                         <Clock3 size={15} />
 
                         <span>
-                          <small>Horario del mes</small>
+                          <small>
+                            Horario del mes
+                          </small>
                           <strong>
                             {medico.horario}
                           </strong>
@@ -774,18 +1017,21 @@ function ClienteDisponibilidadPage() {
             </div>
           </section>
 
-          {/* FECHA Y HORARIO */}
-
           <section className="horarios-panel">
             <div className="panel-heading horarios-heading">
               <div>
                 <span>Disponibilidad</span>
 
-                <h2>Selecciona fecha y horario</h2>
+                <h2>
+                  Selecciona fecha y horario
+                </h2>
 
                 <p>
                   Horarios disponibles de{' '}
-                  <strong>{medicoActual.nombre}</strong>.
+                  <strong>
+                    {medicoActual.nombre}
+                  </strong>
+                  .
                 </p>
               </div>
 
@@ -877,7 +1123,9 @@ function ClienteDisponibilidadPage() {
                       seleccionado ? 'selected' : ''
                     }`}
                     onClick={() =>
-                      setHoraSeleccionada(horario.hora)
+                      setHoraSeleccionada(
+                        horario.hora,
+                      )
                     }
                   >
                     <strong>{horario.hora}</strong>
@@ -900,7 +1148,11 @@ function ClienteDisponibilidadPage() {
                   <Check size={16} />
 
                   <div>
-                    <span>Horario seleccionado</span>
+                    <span>
+                      {esReprogramacion
+                        ? 'Nuevo horario seleccionado'
+                        : 'Horario seleccionado'}
+                    </span>
 
                     <strong>
                       {fechaActual.dia}/11/2026 ·{' '}
@@ -913,7 +1165,9 @@ function ClienteDisponibilidadPage() {
                   <Clock3 size={16} />
 
                   <div>
-                    <span>Selecciona un horario</span>
+                    <span>
+                      Selecciona un horario
+                    </span>
 
                     <strong>
                       Elige una hora disponible para
@@ -966,7 +1220,10 @@ function ClienteDisponibilidadPage() {
             onClick={() => navigate(-1)}
           >
             <ArrowLeft size={15} />
-            Volver a la consulta
+
+            {esReprogramacion
+              ? 'Volver a mis citas'
+              : 'Volver a la consulta'}
           </button>
         )}
       </div>

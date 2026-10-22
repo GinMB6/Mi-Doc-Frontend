@@ -11,6 +11,7 @@ import ClienteInicioPage from '../roles/cliente/pages/ClienteInicioPage'
 import ClienteConsultasPage from '../roles/cliente/pages/ClienteConsultasPage'
 import ClienteConsultaDetallePage from '../roles/cliente/pages/ClienteConsultaDetallePage'
 import ClienteDisponibilidadPage from '../roles/cliente/pages/ClienteDisponibilidadPage'
+import ClienteCitasPage from '../roles/cliente/pages/ClienteCitasPage'
 
 function AppRouter() {
   return (
@@ -79,6 +80,10 @@ function AppRouter() {
            element={<ClienteDisponibilidadPage />}
         />
 
+        <Route
+          path="/cliente/citas"
+          element={<ClienteCitasPage />}
+        />
 
       </Routes>
     </BrowserRouter>
