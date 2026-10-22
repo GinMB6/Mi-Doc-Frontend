@@ -7,11 +7,16 @@ import {
 
 import LoginPage from '../auth/pages/LoginPage'
 import RegistroPage from '../auth/pages/RegistroPage'
+
 import ClienteInicioPage from '../roles/cliente/pages/ClienteInicioPage'
 import ClienteConsultasPage from '../roles/cliente/pages/ClienteConsultasPage'
 import ClienteConsultaDetallePage from '../roles/cliente/pages/ClienteConsultaDetallePage'
 import ClienteDisponibilidadPage from '../roles/cliente/pages/ClienteDisponibilidadPage'
 import ClienteCitasPage from '../roles/cliente/pages/ClienteCitasPage'
+
+import DoctorInicioPage from '../roles/doctor/pages/DoctorInicioPage'
+import DoctorAgendaPage from '../roles/doctor/pages/DoctorAgendaPage'
+import DoctorCitasPage from '../roles/doctor/pages/DoctorCitasPage'
 
 function AppRouter() {
   return (
@@ -19,71 +24,31 @@ function AppRouter() {
       <Routes>
 
         {/* Ruta inicial */}
-        <Route
-          path="/"
-          element={<Navigate to="/login" replace />}
-        />
+        <Route path="/" element={<Navigate to="/login" replace />} />
 
         {/* Autenticación */}
-        <Route
-          path="/login"
-          element={<LoginPage />}
-        />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/registro" element={<RegistroPage />} />
 
-        <Route
-          path="/registro"
-          element={<RegistroPage />}
-        />
-        {/* Rutas temporales por perfil */}
-        <Route
-          path="/cliente/inicio"
-          element={<ClienteInicioPage />}
-        />
+        {/* Cliente */}
+        <Route path="/cliente/inicio" element={<ClienteInicioPage />} />
+        <Route path="/cliente/consultas" element={<ClienteConsultasPage />} />
+        <Route path="/cliente/consultas/:id" element={<ClienteConsultaDetallePage />} />
+        <Route path="/cliente/disponibilidad" element={<ClienteDisponibilidadPage />} />
+        <Route path="/cliente/citas" element={<ClienteCitasPage />} />
 
-        <Route
-          path="/doctor/inicio"
-          element={<h1>Inicio Doctor</h1>}
-        />
+        {/* Doctor */}
+        <Route path="/doctor/inicio" element={<DoctorInicioPage />} />
+        <Route path="/doctor/agenda" element={<DoctorAgendaPage />} />
+        <Route path="/doctor/citas" element={<DoctorCitasPage />} />
 
-        <Route
-          path="/recepcion/inicio"
-          element={<h1>Inicio Recepción</h1>}
-        />
+        {/* Perfiles pendientes */}
+        <Route path="/recepcion/inicio" element={<h1>Inicio Recepción</h1>} />
+        <Route path="/promotor/inicio" element={<h1>Inicio Promotor BCP</h1>} />
+        <Route path="/administrador/inicio" element={<h1>Inicio Administrador</h1>} />
 
-        <Route
-          path="/promotor/inicio"
-          element={<h1>Inicio Promotor BCP</h1>}
-        />
-
-        <Route
-          path="/administrador/inicio"
-          element={<h1>Inicio Administrador</h1>}
-        />
-
-        <Route
-         path="/cliente/consultas"
-         element={<ClienteConsultasPage />}
-        />
         {/* Ruta inexistente */}
-        <Route
-          path="*"
-          element={<Navigate to="/login" replace />}
-        />
-
-        <Route
-           path="/cliente/consultas/:id"
-           element={<ClienteConsultaDetallePage />}
-        />
-
-        <Route
-          path="/cliente/disponibilidad"
-           element={<ClienteDisponibilidadPage />}
-        />
-
-        <Route
-          path="/cliente/citas"
-          element={<ClienteCitasPage />}
-        />
+        <Route path="*" element={<Navigate to="/login" replace />} />
 
       </Routes>
     </BrowserRouter>
