@@ -13,7 +13,8 @@ import ClienteConsultasPage from '../roles/cliente/pages/ClienteConsultasPage'
 import ClienteConsultaDetallePage from '../roles/cliente/pages/ClienteConsultaDetallePage'
 import ClienteDisponibilidadPage from '../roles/cliente/pages/ClienteDisponibilidadPage'
 import ClienteCitasPage from '../roles/cliente/pages/ClienteCitasPage'
-
+import RecepcionInicioPage from '../roles/recepcion/pages/RecepcionInicioPage'
+import RecepcionClientesPage from '../roles/recepcion/pages/RecepcionClientesPage'
 import DoctorInicioPage from '../roles/doctor/pages/DoctorInicioPage'
 import DoctorAgendaPage from '../roles/doctor/pages/DoctorAgendaPage'
 import DoctorCitasPage from '../roles/doctor/pages/DoctorCitasPage'
@@ -42,8 +43,11 @@ function AppRouter() {
         <Route path="/doctor/agenda" element={<DoctorAgendaPage />} />
         <Route path="/doctor/citas" element={<DoctorCitasPage />} />
 
+        {/* Recepción */}
+        <Route path="/recepcion/inicio" element={<RecepcionInicioPage />} />
+        <Route path="/recepcion/clientes" element={<RecepcionClientesPage />} />
+       
         {/* Perfiles pendientes */}
-        <Route path="/recepcion/inicio" element={<h1>Inicio Recepción</h1>} />
         <Route path="/promotor/inicio" element={<h1>Inicio Promotor BCP</h1>} />
         <Route path="/administrador/inicio" element={<h1>Inicio Administrador</h1>} />
 
