@@ -7,6 +7,8 @@ import {
 
 import LoginPage from '../auth/pages/LoginPage'
 import RegistroPage from '../auth/pages/RegistroPage'
+import ClienteInicioPage from '../roles/cliente/pages/ClienteInicioPage'
+import ClienteConsultasPage from '../roles/cliente/pages/ClienteConsultasPage'
 
 function AppRouter() {
   return (
@@ -32,7 +34,7 @@ function AppRouter() {
         {/* Rutas temporales por perfil */}
         <Route
           path="/cliente/inicio"
-          element={<h1>Inicio Cliente</h1>}
+          element={<ClienteInicioPage />}
         />
 
         <Route
@@ -55,6 +57,10 @@ function AppRouter() {
           element={<h1>Inicio Administrador</h1>}
         />
 
+        <Route
+         path="/cliente/consultas"
+         element={<ClienteConsultasPage />}
+        />
         {/* Ruta inexistente */}
         <Route
           path="*"

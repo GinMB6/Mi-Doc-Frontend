@@ -7,7 +7,17 @@ import {
 } from 'lucide-react'
 
 import ValidarDni from '../components/registro/ValidarDni'
+import DatosCliente from '../components/registro/DatosCliente'
+import VerificarCorreo from '../components/registro/VerificarCorreo'
+import CrearCredenciales from '../components/registro/CrearCredenciales'
+
+import {
+  crearCuentaRegistro,
+  enviarCodigoVerificacion,
+} from '../../services/registroService'
+
 import type {
+  DatosClienteRegistro,
   EstadoRegistro,
   ValidarDniResponse,
 } from '../../types/registro'
@@ -33,12 +43,22 @@ function RegistroPage() {
   const [estadoRegistro, setEstadoRegistro] =
     useState<EstadoRegistro | null>(null)
 
-  const manejarDniValidado = (
+  const [correoEnmascarado, setCorreoEnmascarado] =
+    useState('')
+
+  const [datosCliente, setDatosCliente] =
+    useState<DatosClienteRegistro | null>(null)
+
+  const manejarDniValidado = async (
     dni: string,
     resultado: ValidarDniResponse
   ) => {
     setDniRegistro(dni)
     setEstadoRegistro(resultado.estado)
+
+    setCorreoEnmascarado(
+      resultado.correoEnmascarado ?? ''
+    )
 
     switch (resultado.estado) {
       case 'CUENTA_ACTIVA':
@@ -46,13 +66,101 @@ function RegistroPage() {
         break
 
       case 'CLIENTE_PREEXISTENTE':
-        setPaso('VERIFICAR_CORREO')
+        try {
+          const respuesta =
+            await enviarCodigoVerificacion({
+              dni,
+            })
+
+          setCorreoEnmascarado(
+            respuesta.correoEnmascarado
+          )
+
+          setPaso('VERIFICAR_CORREO')
+        } catch (error) {
+          console.error(
+            'Error al enviar el código:',
+            error
+          )
+        }
+
         break
 
       case 'CLIENTE_NUEVO':
         setPaso('DATOS_CLIENTE')
         break
     }
+  }
+
+  const manejarDatosCliente = async (
+    datos: DatosClienteRegistro
+  ) => {
+    setDatosCliente(datos)
+
+    try {
+      const respuesta =
+        await enviarCodigoVerificacion({
+          dni: datos.dni,
+          correo: datos.correo,
+        })
+
+      setCorreoEnmascarado(
+        respuesta.correoEnmascarado
+      )
+
+      setPaso('VERIFICAR_CORREO')
+    } catch (error) {
+      console.error(
+        'Error al enviar el código:',
+        error
+      )
+    }
+  }
+
+  const manejarCorreoVerificado = () => {
+    setPaso('CREAR_CREDENCIALES')
+  }
+
+const manejarCrearCuenta = async (
+  contrasena: string
+) => {
+  try {
+    const resultado = await crearCuentaRegistro({
+      dni: dniRegistro,
+      contrasena,
+      datosCliente:
+        estadoRegistro === 'CLIENTE_NUEVO'
+          ? datosCliente ?? undefined
+          : undefined,
+    })
+
+    if (!resultado.creado) {
+      console.error(resultado.mensaje)
+      return
+    }
+
+    navigate('/login', {
+      state: {
+        registroExitoso: true,
+        mensaje: resultado.mensaje,
+      },
+    })
+  } catch (error) {
+    console.error(
+      'Error al crear la cuenta:',
+      error
+    )
+  }
+}
+
+
+  const volverDesdeVerificacion = () => {
+    if (estadoRegistro === 'CLIENTE_NUEVO') {
+      setPaso('DATOS_CLIENTE')
+      return
+    }
+
+    setPaso('VALIDAR_DNI')
   }
 
   return (
@@ -87,23 +195,30 @@ function RegistroPage() {
           />
         )}
 
-        {/*
-          Los siguientes pasos se conectarán
-          progresivamente:
+        {paso === 'DATOS_CLIENTE' && (
+          <DatosCliente
+            dni={dniRegistro}
+            onContinuar={manejarDatosCliente}
+            onVolver={() => setPaso('VALIDAR_DNI')}
+          />
+        )}
 
-          DATOS_CLIENTE
-          → DatosCliente.tsx
+        {paso === 'VERIFICAR_CORREO' && (
+          <VerificarCorreo
+            dni={dniRegistro}
+            correo={datosCliente?.correo ?? ''}
+            correoEnmascarado={correoEnmascarado}
+            onVerificado={manejarCorreoVerificado}
+            onVolver={volverDesdeVerificacion}
+          />
+        )}
 
-          VERIFICAR_CORREO
-          → VerificarCorreo.tsx
-
-          CREAR_CREDENCIALES
-          → CrearCredenciales.tsx
-
-          CUENTA_EXISTENTE
-          → Avisaremos que ya posee una cuenta
-             y podrá ir al login.
-        */}
+        {paso === 'CREAR_CREDENCIALES' && (
+          <CrearCredenciales
+            onCrearCuenta={manejarCrearCuenta}
+           onVolver={() => setPaso('VERIFICAR_CORREO')}
+         />
+        )}
 
         <div className="register-login">
           <span>¿Ya tienes una cuenta?</span>
@@ -116,15 +231,12 @@ function RegistroPage() {
           </button>
         </div>
 
-        {/*
-          Estas variables ya quedan guardadas
-          para los siguientes pasos.
-        */}
-
         {false && (
           <div>
             {dniRegistro}
             {estadoRegistro}
+            {correoEnmascarado}
+            {datosCliente?.correo}
           </div>
         )}
       </section>
@@ -164,6 +276,7 @@ function RegistroPage() {
 
             <div>
               <strong>Verifica tu información</strong>
+
               <p>
                 Comprobaremos si ya tienes datos
                 registrados.
@@ -176,6 +289,7 @@ function RegistroPage() {
 
             <div>
               <strong>Confirma tu correo</strong>
+
               <p>
                 Recibirás un código para verificar tu
                 cuenta.

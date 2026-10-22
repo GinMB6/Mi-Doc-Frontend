@@ -1,8 +1,10 @@
 .register-page {
   width: 100%;
   min-height: 100vh;
+
   display: grid;
   grid-template-columns: 48% 52%;
+
   background: #ffffff;
 }
 
@@ -10,6 +12,7 @@
   width: 100%;
   max-width: 520px;
   min-height: 100vh;
+
   margin: auto;
   padding: clamp(30px, 5vh, 55px) 35px;
 
@@ -91,6 +94,10 @@
   font-size: 12px;
 }
 
+/* =========================================================
+   PROGRESO
+   ========================================================= */
+
 .register-progress {
   width: fit-content;
 
@@ -138,6 +145,10 @@
   font-weight: 700;
 }
 
+/* =========================================================
+   ENCABEZADO
+   ========================================================= */
+
 .register-heading {
   margin-bottom: 25px;
 }
@@ -162,6 +173,10 @@
   font-size: 14px;
   line-height: 1.6;
 }
+
+/* =========================================================
+   FORMULARIOS
+   ========================================================= */
 
 .register-form {
   display: flex;
@@ -204,6 +219,7 @@
 
 .register-input:focus-within {
   border-color: #8d4cdb;
+
   box-shadow: 0 0 0 4px rgba(141, 76, 219, 0.1);
 }
 
@@ -239,6 +255,10 @@
   font-weight: 600;
 }
 
+/* =========================================================
+   BOTONES
+   ========================================================= */
+
 .register-continue {
   height: 55px;
 
@@ -270,6 +290,7 @@
 
 .register-continue:hover:not(:disabled) {
   transform: translateY(-1px);
+
   box-shadow: 0 12px 26px rgba(116, 53, 189, 0.28);
 }
 
@@ -277,6 +298,41 @@
   cursor: not-allowed;
   opacity: 0.7;
 }
+
+.register-actions {
+  display: grid;
+  grid-template-columns: 0.75fr 1.25fr;
+  gap: 11px;
+}
+
+.register-secondary {
+  height: 55px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  border: 1.5px solid #ded5eb;
+  border-radius: 13px;
+
+  background: #ffffff;
+  color: #6c5e82;
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.register-secondary:hover {
+  border-color: #b994e5;
+
+  color: #7435bd;
+  background: #faf7ff;
+}
+
+/* =========================================================
+   INFORMACIÓN DE SEGURIDAD
+   ========================================================= */
 
 .register-info {
   display: flex;
@@ -295,6 +351,7 @@
 
 .register-info svg {
   flex-shrink: 0;
+
   margin-top: 1px;
 }
 
@@ -306,6 +363,10 @@
   font-size: 11px;
   line-height: 1.5;
 }
+
+/* =========================================================
+   INICIAR SESIÓN
+   ========================================================= */
 
 .register-login {
   display: flex;
@@ -335,7 +396,7 @@
 }
 
 /* =========================================================
-   PANEL DERECHO
+   PANEL DERECHO - IMAGEN
    ========================================================= */
 
 .register-visual {
@@ -475,6 +536,283 @@
 }
 
 /* =========================================================
+   DATOS DEL CLIENTE
+   ========================================================= */
+
+.register-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 13px;
+}
+
+.register-input-disabled {
+  background: #f7f5fa;
+  color: #aaa2bc;
+}
+
+.register-input-disabled input {
+  color: #8c849d;
+  cursor: not-allowed;
+}
+
+/* =========================================================
+   VERIFICACIÓN DE CORREO
+   ========================================================= */
+
+.verification-email {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  margin-bottom: 22px;
+  padding: 14px 16px;
+
+  border: 1px solid #e5d4ff;
+  border-radius: 13px;
+
+  background: #faf7ff;
+}
+
+.verification-email-icon {
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 11px;
+
+  background: #eee2ff;
+  color: #7435bd;
+}
+
+.verification-email span {
+  display: block;
+
+  margin-bottom: 3px;
+
+  color: #8b819e;
+
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.verification-email strong {
+  display: block;
+
+  color: #2a2042;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  word-break: break-word;
+}
+
+.verification-code-input input {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 7px;
+}
+
+.verification-code-input input::placeholder {
+  letter-spacing: 7px;
+}
+
+.verification-success {
+  margin: -3px 0 0;
+
+  color: #39805c;
+
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.verification-resend {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 5px;
+
+  margin-top: 18px;
+
+  color: #716889;
+
+  font-size: 12px;
+}
+
+.verification-resend button {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  padding: 0;
+
+  border: none;
+  background: transparent;
+
+  color: #7435bd;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.verification-resend button:hover:not(:disabled) {
+  text-decoration: underline;
+}
+
+.verification-resend button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.verification-back {
+  width: fit-content;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  margin: 15px auto 0;
+  padding: 0;
+
+  border: none;
+  background: transparent;
+
+  color: #8b819e;
+
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.verification-back:hover {
+  color: #7435bd;
+}
+
+/* =========================================================
+   CREAR CREDENCIALES
+   ========================================================= */
+
+.credentials-verified {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+
+  margin-bottom: 21px;
+  padding: 13px 15px;
+
+  border: 1px solid #d8ecdf;
+  border-radius: 13px;
+
+  background: #f5fbf7;
+}
+
+.credentials-verified-icon {
+  width: 39px;
+  height: 39px;
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background: #e2f4e8;
+  color: #39805c;
+}
+
+.credentials-verified strong {
+  display: block;
+
+  margin-bottom: 2px;
+
+  color: #315f48;
+
+  font-size: 12px;
+}
+
+.credentials-verified span {
+  display: block;
+
+  color: #718078;
+
+  font-size: 10px;
+}
+
+.credentials-eye {
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 3px;
+
+  border: none;
+  background: transparent;
+
+  color: #8e82ab;
+}
+
+.credentials-eye:hover {
+  color: #7435bd;
+}
+
+.credentials-requirements {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 12px;
+
+  padding: 13px 15px;
+
+  border-radius: 12px;
+
+  background: #f8f6fb;
+}
+
+.credentials-requirements > p {
+  grid-column: 1 / -1;
+
+  margin: 0 0 3px;
+
+  color: #5f566f;
+
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.credentials-requirements > div {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  color: #a19aaa;
+
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.credentials-requirements svg {
+  padding: 2px;
+
+  border-radius: 50%;
+
+  background: #e9e5ed;
+}
+
+.credentials-requirements .requirement-ok {
+  color: #39805c;
+}
+
+.credentials-requirements .requirement-ok svg {
+  background: #dff2e6;
+}
+
+/* =========================================================
    RESPONSIVE
    ========================================================= */
 
@@ -490,6 +828,16 @@
 
   .register-visual {
     display: none;
+  }
+}
+
+@media (max-width: 520px) {
+  .register-form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .register-actions {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -512,5 +860,13 @@
 
   .register-login {
     flex-wrap: wrap;
+  }
+
+  .credentials-requirements {
+    grid-template-columns: 1fr;
+  }
+
+  .credentials-requirements > p {
+    grid-column: auto;
   }
 }

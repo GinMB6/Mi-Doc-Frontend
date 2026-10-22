@@ -1,0 +1,491 @@
+.consultas-page {
+  width: 100%;
+}
+
+.consultas-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 25px;
+
+  margin-bottom: 20px;
+}
+
+.consultas-eyebrow {
+  display: block;
+
+  margin-bottom: 6px;
+
+  color: #7435bd;
+
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.consultas-heading h1 {
+  margin: 0;
+
+  color: #241a39;
+
+  font-size: clamp(26px, 3vw, 34px);
+  font-weight: 800;
+}
+
+.consultas-heading p {
+  margin: 8px 0 0;
+
+  color: #83798f;
+
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.consultas-heading-icon {
+  width: 67px;
+  height: 67px;
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 19px;
+
+  background: #efe3ff;
+  color: #7435bd;
+}
+
+.consultas-filters {
+  display: grid;
+  grid-template-columns: 1fr 230px;
+  gap: 12px;
+
+  margin-bottom: 20px;
+  padding: 15px;
+
+  border: 1px solid #eee8f4;
+  border-radius: 16px;
+
+  background: #ffffff;
+}
+
+.consultas-search {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  padding: 0 14px;
+
+  border: 1px solid #e5dfeb;
+  border-radius: 11px;
+
+  color: #958aa2;
+}
+
+.consultas-search input {
+  width: 100%;
+
+  padding: 12px 0;
+
+  border: none;
+  outline: none;
+
+  background: transparent;
+  color: #34274a;
+
+  font-size: 11px;
+}
+
+.consultas-search input::placeholder {
+  color: #aaa1b3;
+}
+
+.consultas-filters select {
+  padding: 0 13px;
+
+  border: 1px solid #e5dfeb;
+  border-radius: 11px;
+  outline: none;
+
+  background: #ffffff;
+  color: #5f556d;
+
+  font-size: 11px;
+}
+
+.consultas-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.consulta-card {
+  padding: 22px;
+
+  border: 1px solid #eee8f4;
+  border-radius: 18px;
+
+  background: #ffffff;
+
+  box-shadow: 0 8px 28px rgba(52, 31, 79, 0.04);
+}
+
+.consulta-main {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.consulta-icon {
+  width: 47px;
+  height: 47px;
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 14px;
+
+  background: #f0e5fd;
+  color: #7435bd;
+}
+
+.consulta-title {
+  flex: 1;
+  min-width: 0;
+}
+
+.consulta-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.consulta-number {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: #9b91a7;
+
+  font-size: 9px;
+  font-weight: 750;
+  text-transform: uppercase;
+}
+
+.consulta-title h2 {
+  margin: 0;
+
+  color: #302344;
+
+  font-size: 17px;
+}
+
+.consulta-title > p {
+  margin: 6px 0 0;
+
+  color: #92889f;
+
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.consulta-status {
+  flex-shrink: 0;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+
+  padding: 7px 10px;
+
+  border-radius: 9px;
+
+  font-size: 9px;
+  font-weight: 800;
+}
+
+.consulta-status.disponible {
+  background: #edf9f0;
+  color: #268a45;
+}
+
+.consulta-status.agendada {
+  background: #eef4ff;
+  color: #3f69c8;
+}
+
+.consulta-information-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+
+  margin-top: 20px;
+  padding: 16px;
+
+  border-radius: 13px;
+
+  background: #faf9fc;
+}
+
+.consulta-information-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.consulta-information-item > svg {
+  flex-shrink: 0;
+
+  margin-top: 2px;
+
+  color: #8d57ca;
+}
+
+.consulta-information-item span,
+.consulta-information-item strong,
+.consulta-information-item small {
+  display: block;
+}
+
+.consulta-information-item span {
+  margin-bottom: 3px;
+
+  color: #9b92a6;
+
+  font-size: 8px;
+  font-weight: 700;
+}
+
+.consulta-information-item strong {
+  color: #443652;
+
+  font-size: 10px;
+}
+
+.consulta-information-item small {
+  margin-top: 3px;
+
+  color: #aaa1b3;
+
+  font-size: 8px;
+}
+
+.consulta-message {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+
+  margin-top: 15px;
+  padding-top: 15px;
+
+  border-top: 1px solid #f0ebf4;
+}
+
+.consulta-message strong {
+  display: block;
+
+  color: #4b3b5e;
+
+  font-size: 10px;
+}
+
+.consulta-message p {
+  margin: 4px 0 0;
+
+  color: #9a91a6;
+
+  font-size: 9px;
+  line-height: 1.5;
+}
+
+.consulta-actions {
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.consulta-primary-button,
+.consulta-secondary-button {
+  min-height: 38px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  padding: 0 14px;
+
+  border-radius: 10px;
+
+  font-size: 9px;
+  font-weight: 800;
+}
+
+.consulta-primary-button {
+  border: none;
+
+  background: #7435bd;
+  color: #ffffff;
+}
+
+.consulta-primary-button:hover {
+  background: #642aa8;
+}
+
+.consulta-secondary-button {
+  border: 1px solid #e1d4ef;
+
+  background: #faf7ff;
+  color: #7435bd;
+}
+
+.consulta-secondary-button:hover {
+  background: #f1e7fc;
+}
+
+.consulta-appointment {
+  margin-top: 15px;
+  padding: 17px;
+
+  border: 1px solid #e5d7f4;
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      120deg,
+      #fcfaff,
+      #f5edff
+    );
+}
+
+.consulta-appointment-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 13px;
+}
+
+.consulta-appointment-header span {
+  display: block;
+
+  margin-bottom: 3px;
+
+  color: #8c7a9f;
+
+  font-size: 8px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.consulta-appointment-header h3 {
+  margin: 0;
+
+  color: #4c2b70;
+
+  font-size: 13px;
+}
+
+.consulta-appointment-header > svg {
+  color: #7435bd;
+}
+
+.consulta-appointment-data {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.consulta-appointment-data span,
+.consulta-appointment-data strong {
+  display: block;
+}
+
+.consulta-appointment-data span {
+  margin-bottom: 3px;
+
+  color: #998da6;
+
+  font-size: 8px;
+}
+
+.consulta-appointment-data strong {
+  color: #443650;
+
+  font-size: 9px;
+}
+
+.consulta-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+
+  margin-top: 15px;
+}
+
+.consulta-reprogramacion-note {
+  color: #7c6b8e;
+
+  font-size: 9px;
+  font-weight: 650;
+}
+
+@media (max-width: 900px) {
+  .consulta-information-grid,
+  .consulta-appointment-data {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 650px) {
+  .consultas-heading-icon {
+    display: none;
+  }
+
+  .consultas-filters {
+    grid-template-columns: 1fr;
+  }
+
+  .consultas-filters select {
+    min-height: 42px;
+  }
+
+  .consulta-title-row,
+  .consulta-message,
+  .consulta-card-footer {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .consulta-actions {
+    width: 100%;
+  }
+
+  .consulta-actions button {
+    flex: 1;
+  }
+}
+
+@media (max-width: 480px) {
+  .consulta-card {
+    padding: 17px;
+  }
+
+  .consulta-information-grid,
+  .consulta-appointment-data {
+    grid-template-columns: 1fr;
+  }
+
+  .consulta-status {
+    align-self: flex-start;
+  }
+}
