@@ -3,7 +3,6 @@ import {
   CalendarDays,
   Check,
   CheckCircle2,
-  Clock3,
   MapPin,
   UserRound,
   X,

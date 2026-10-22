@@ -68,6 +68,7 @@ function AppRouter() {
         <Route path="/administrador/inicio" element={<AdministradorInicioPage />} />
         <Route path="/administrador/usuarios" element={<AdministradorUsuariosPage />} />
         <Route path="/administrador/historial" element={<AdministradorHistorialPage />} />
+       
         {/* Ruta inexistente */}
         <Route path="*" element={<Navigate to="/login" replace />} />
 
