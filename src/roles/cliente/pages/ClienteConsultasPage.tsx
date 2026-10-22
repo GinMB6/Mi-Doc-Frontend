@@ -171,11 +171,14 @@ function ClienteConsultasPage() {
                 </button>
 
                 <button
-                  type="button"
+                 type="button"
                   className="consulta-primary-button"
+                  onClick={() =>
+                   navigate('/cliente/disponibilidad?consulta=001')
+                  }
                 >
                   Agendar cita
-                  <ArrowRight size={15} />
+               <ArrowRight size={15} />
                 </button>
               </div>
             </div>
@@ -280,10 +283,13 @@ function ClienteConsultasPage() {
                 <button
                   type="button"
                   className="consulta-primary-button"
+                  onClick={() =>
+                   navigate('/cliente/disponibilidad?consulta=002')
+                 }
                 >
-                  Agendar cita
-                  <ArrowRight size={15} />
-                </button>
+                Agendar cita
+                 <ArrowRight size={15} />
+              </button>
               </div>
             </div>
           </article>

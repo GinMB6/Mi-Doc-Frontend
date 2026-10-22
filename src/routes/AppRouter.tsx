@@ -10,6 +10,7 @@ import RegistroPage from '../auth/pages/RegistroPage'
 import ClienteInicioPage from '../roles/cliente/pages/ClienteInicioPage'
 import ClienteConsultasPage from '../roles/cliente/pages/ClienteConsultasPage'
 import ClienteConsultaDetallePage from '../roles/cliente/pages/ClienteConsultaDetallePage'
+import ClienteDisponibilidadPage from '../roles/cliente/pages/ClienteDisponibilidadPage'
 
 function AppRouter() {
   return (
@@ -72,6 +73,12 @@ function AppRouter() {
            path="/cliente/consultas/:id"
            element={<ClienteConsultaDetallePage />}
         />
+
+        <Route
+          path="/cliente/disponibilidad"
+           element={<ClienteDisponibilidadPage />}
+        />
+
 
       </Routes>
     </BrowserRouter>
