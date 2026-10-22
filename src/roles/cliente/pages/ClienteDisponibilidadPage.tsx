@@ -54,14 +54,7 @@ type CitaActualDemo = {
 }
 
 /*
- * DATOS TEMPORALES PARA EL DISEÑO DEL FRONTEND.
- *
- * Cuando conectemos Flask:
- * - médicos, fechas y horarios vendrán del backend;
- * - React no decidirá disponibilidad real;
- * - la cita actual también vendrá de la BD;
- * - Flask validará nuevamente antes de agendar/reprogramar;
- * - Flask registrará el cambio y enviará el correo.
+ * TODO TEMPORAL
  */
 
 const medicosDemo: MedicoDemo[] = [
@@ -255,9 +248,6 @@ function ClienteDisponibilidadPage() {
   }
 
   /*
-   * ======================================================
-   * ÉXITO
-   * ======================================================
    */
 
   if (citaConfirmada) {
@@ -391,9 +381,7 @@ function ClienteDisponibilidadPage() {
   }
 
   /*
-   * ======================================================
-   * PASO 5 - CONFIRMACIÓN
-   * ======================================================
+   *5.confirmacion
    */
 
   if (mostrarConfirmacion) {

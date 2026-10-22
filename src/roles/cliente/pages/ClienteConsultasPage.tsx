@@ -71,10 +71,7 @@ function ClienteConsultasPage() {
         </section>
 
         <section className="consultas-list">
-          {/* ==========================================
-              CASO 1: SIN ESPECIALIDAD Y SIN CITA
-              DATOS TEMPORALES SOLO PARA EL FRONTEND
-             ========================================== */}
+          {/*1 */}
 
           <article className="consulta-card">
             <div className="consulta-main">
@@ -184,10 +181,7 @@ function ClienteConsultasPage() {
             </div>
           </article>
 
-          {/* ==========================================
-              CASO 2: CON ESPECIALIDAD, SIN CITA
-              DATOS TEMPORALES SOLO PARA EL FRONTEND
-             ========================================== */}
+          {/* 2 */}
 
           <article className="consulta-card">
             <div className="consulta-main">
@@ -294,10 +288,9 @@ function ClienteConsultasPage() {
             </div>
           </article>
 
-          {/* ==========================================
-              CASO 3: CONSULTA CON CITA
-              DATOS TEMPORALES SOLO PARA EL FRONTEND
-             ========================================== */}
+          {/* 
+              CASO 3
+              */}
 
           <article className="consulta-card">
             <div className="consulta-main">

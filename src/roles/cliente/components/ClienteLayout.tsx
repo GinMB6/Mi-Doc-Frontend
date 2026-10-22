@@ -34,8 +34,7 @@ function ClienteLayout({
 
   const cerrarSesion = () => {
     /*
-      Cuando conectemos autenticación:
-      aquí se cerrará la sesión real.
+      autenticacion
     */
 
     navigate('/login')

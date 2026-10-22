@@ -198,17 +198,7 @@ function ClienteDisponibilidadPage() {
 
   const confirmarCita = () => {
     /*
-     * FRONTEND TEMPORAL:
-     *
-     * Aquí NO creamos realmente la cita todavía.
-     *
-     * Cuando conectemos Flask:
-     * 1. El backend volverá a validar que el horario siga libre.
-     * 2. Creará la cita en PostgreSQL.
-     * 3. Registrará la notificación.
-     * 4. Enviará el correo de confirmación.
-     * 5. Solo después de una respuesta exitosa mostraremos
-     *    esta pantalla de éxito.
+     * Fronend temporal, luego el back volvera a validar :3
      */
 
     setCitaConfirmada(true)
