@@ -24,6 +24,9 @@ import PromotorClientesPage from '../roles/promotor/pages/PromotorClientesPage'
 import PromotorComprasPage from '../roles/promotor/pages/PromotorComprasPage'
 import PromotorConsultasPage from '../roles/promotor/pages/PromotorConsultasPage'
 import PromotorAgendamientoPage from '../roles/promotor/pages/PromotorAgendamientoPage'
+import AdministradorInicioPage from '../roles/administrador/pages/AdministradorInicioPage'
+import AdministradorUsuariosPage from '../roles/administrador/pages/AdministradorUsuariosPage'
+import AdministradorHistorialPage from '../roles/administrador/pages/AdministradorHistorialPage'
 
 function AppRouter() {
   return (
@@ -62,9 +65,9 @@ function AppRouter() {
         <Route path="/promotor/consultas" element={<PromotorConsultasPage />} />
         <Route path="/promotor/agendamiento" element={<PromotorAgendamientoPage />} />
        
-        {/* Perfiles pendientes */}
-        <Route path="/administrador/inicio" element={<h1>Inicio Administrador</h1>} />
-
+        <Route path="/administrador/inicio" element={<AdministradorInicioPage />} />
+        <Route path="/administrador/usuarios" element={<AdministradorUsuariosPage />} />
+        <Route path="/administrador/historial" element={<AdministradorHistorialPage />} />
         {/* Ruta inexistente */}
         <Route path="*" element={<Navigate to="/login" replace />} />
 
