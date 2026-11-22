@@ -1,24 +1,24 @@
-import { useState } from 'react'
+
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   ArrowLeft,
   HeartPulse,
+  MailCheck,
   ShieldCheck,
 } from 'lucide-react'
 
 import ValidarDni from '../components/registro/ValidarDni'
 import DatosCliente from '../components/registro/DatosCliente'
-import VerificarCorreo from '../components/registro/VerificarCorreo'
 import CrearCredenciales from '../components/registro/CrearCredenciales'
 
 import {
-  crearCuentaRegistro,
   enviarCodigoVerificacion,
+  crearCuentaRegistro,
 } from '../../services/registroService'
 
 import type {
   DatosClienteRegistro,
-  EstadoRegistro,
   ValidarDniResponse,
 } from '../../types/registro'
 
@@ -27,140 +27,220 @@ import '../styles/RegistroPage.css'
 type PasoRegistro =
   | 'VALIDAR_DNI'
   | 'DATOS_CLIENTE'
-  | 'VERIFICAR_CORREO'
   | 'CREAR_CREDENCIALES'
-  | 'CUENTA_EXISTENTE'
+  | 'VERIFICAR_CORREO'
+  | 'FINALIZADO'
+
+interface RegistroPendiente {
+  datos: DatosClienteRegistro
+  vence: number
+}
+
+const CLAVE_REGISTRO = 'midoc_registro_pendiente'
+const DURACION_REGISTRO = 30 * 60 * 1000
+
+function guardarRegistro(
+  datos: DatosClienteRegistro
+) {
+  const pendiente: RegistroPendiente = {
+    datos,
+    vence: Date.now() + DURACION_REGISTRO,
+  }
+
+  localStorage.setItem(
+    CLAVE_REGISTRO,
+    JSON.stringify(pendiente)
+  )
+}
+
+function recuperarRegistro(): DatosClienteRegistro | null {
+  try {
+    const guardado = localStorage.getItem(
+      CLAVE_REGISTRO
+    )
+
+    if (!guardado) return null
+
+    const pendiente = JSON.parse(
+      guardado
+    ) as RegistroPendiente
+
+    if (
+      !pendiente.datos ||
+      !pendiente.vence ||
+      Date.now() > pendiente.vence
+    ) {
+      localStorage.removeItem(CLAVE_REGISTRO)
+      return null
+    }
+
+    return pendiente.datos
+  } catch {
+    localStorage.removeItem(CLAVE_REGISTRO)
+    return null
+  }
+}
 
 function RegistroPage() {
   const navigate = useNavigate()
 
-  const [paso, setPaso] =
-    useState<PasoRegistro>('VALIDAR_DNI')
+  const [paso, setPaso] = useState<PasoRegistro>(
+    'VALIDAR_DNI'
+  )
 
-  const [dniRegistro, setDniRegistro] =
-    useState('')
-
-  const [estadoRegistro, setEstadoRegistro] =
-    useState<EstadoRegistro | null>(null)
-
-  const [correoEnmascarado, setCorreoEnmascarado] =
-    useState('')
-
+  const [dniRegistro, setDniRegistro] = useState('')
   const [datosCliente, setDatosCliente] =
     useState<DatosClienteRegistro | null>(null)
 
-  const manejarDniValidado = async (
-    dni: string,
-    resultado: ValidarDniResponse
-  ) => {
-    setDniRegistro(dni)
-    setEstadoRegistro(resultado.estado)
+  const [cargando, setCargando] = useState(false)
+  const [error, setError] = useState('')
+  const [mensaje, setMensaje] = useState('')
 
-    setCorreoEnmascarado(
-      resultado.correoEnmascarado ?? ''
-    )
+  useEffect(() => {
+    const confirmarRegistro = async () => {
+      const fragmento = new URLSearchParams(
+        window.location.hash.slice(1)
+      )
 
-    switch (resultado.estado) {
-      case 'CUENTA_ACTIVA':
-        setPaso('CUENTA_EXISTENTE')
-        break
+      const parametros = new URLSearchParams(
+        window.location.search
+      )
 
-      case 'CLIENTE_PREEXISTENTE':
-        try {
-          const respuesta =
-            await enviarCodigoVerificacion({
-              dni,
-            })
+      const token = fragmento.get('access_token')
+      const errorAuth =
+        fragmento.get('error_description') ||
+        parametros.get('error_description')
 
-          setCorreoEnmascarado(
-            respuesta.correoEnmascarado
-          )
+      if (errorAuth) {
+        setError(errorAuth)
+        setPaso('VERIFICAR_CORREO')
 
+        window.history.replaceState(
+          {},
+          '',
+          window.location.pathname
+        )
+        return
+      }
+
+      const pendiente = recuperarRegistro()
+
+      if (!token) {
+        if (pendiente) {
+          setDatosCliente(pendiente)
+          setDniRegistro(pendiente.dni)
           setPaso('VERIFICAR_CORREO')
-        } catch (error) {
-          console.error(
-            'Error al enviar el código:',
-            error
-          )
+        }
+        return
+      }
+
+      // Retiramos el token de la barra de direcciones.
+      window.history.replaceState(
+        {},
+        '',
+        window.location.pathname
+      )
+
+      if (!pendiente) {
+        setError(
+          'No encontramos los datos del registro ' +
+          'o el registro ha expirado. ' +
+          'Inicia el proceso nuevamente.'
+        )
+        setPaso('VERIFICAR_CORREO')
+        return
+      }
+
+      setPaso('VERIFICAR_CORREO')
+      setCargando(true)
+      setError('')
+
+      try {
+        const resultado = await crearCuentaRegistro({
+          accessToken: token,
+          datosCliente: pendiente,
+        })
+
+        if (!resultado.creado) {
+          throw new Error(resultado.mensaje)
         }
 
-        break
+        localStorage.removeItem(CLAVE_REGISTRO)
 
-      case 'CLIENTE_NUEVO':
-        setPaso('DATOS_CLIENTE')
-        break
+        setDatosCliente(null)
+        setMensaje(
+          resultado.mensaje ||
+          'Tu cuenta se creó correctamente.'
+        )
+        setPaso('FINALIZADO')
+      } catch (err) {
+        setError(
+          err instanceof Error
+            ? err.message
+            : 'No se pudo completar tu registro.'
+        )
+      } finally {
+        setCargando(false)
+      }
     }
+
+    void confirmarRegistro()
+  }, [])
+
+  const manejarDniValidado = (
+    dni: string,
+    _resultado: ValidarDniResponse
+  ) => {
+    setDniRegistro(dni)
+    setError('')
+    setPaso('DATOS_CLIENTE')
   }
 
-  const manejarDatosCliente = async (
+  const manejarDatosCliente = (
     datos: DatosClienteRegistro
   ) => {
     setDatosCliente(datos)
-
-    try {
-      const respuesta =
-        await enviarCodigoVerificacion({
-          dni: datos.dni,
-          correo: datos.correo,
-        })
-
-      setCorreoEnmascarado(
-        respuesta.correoEnmascarado
-      )
-
-      setPaso('VERIFICAR_CORREO')
-    } catch (error) {
-      console.error(
-        'Error al enviar el código:',
-        error
-      )
-    }
-  }
-
-  const manejarCorreoVerificado = () => {
+    setError('')
     setPaso('CREAR_CREDENCIALES')
   }
 
-const manejarCrearCuenta = async (
-  contrasena: string
-) => {
-  try {
-    const resultado = await crearCuentaRegistro({
-      dni: dniRegistro,
-      contrasena,
-      datosCliente:
-        estadoRegistro === 'CLIENTE_NUEVO'
-          ? datosCliente ?? undefined
-          : undefined,
-    })
-
-    if (!resultado.creado) {
-      console.error(resultado.mensaje)
+  const manejarCrearCuenta = async (
+    contrasena: string
+  ) => {
+    if (!datosCliente) {
+      setError(
+        'Primero debes completar tus datos personales.'
+      )
       return
     }
 
-    navigate('/login', {
-      state: {
-        registroExitoso: true,
-        mensaje: resultado.mensaje,
-      },
-    })
-  } catch (error) {
-    console.error(
-      'Error al crear la cuenta:',
-      error
-    )
-  }
-}
+    setCargando(true)
+    setError('')
 
+    try {
+      guardarRegistro(datosCliente)
 
-  const volverDesdeVerificacion = () => {
-    if (estadoRegistro === 'CLIENTE_NUEVO') {
-      setPaso('DATOS_CLIENTE')
-      return
+      const respuesta =
+        await enviarCodigoVerificacion({
+          correo: datosCliente.correo,
+          contrasena,
+        })
+
+      setMensaje(respuesta.mensaje)
+      setPaso('VERIFICAR_CORREO')
+    } catch (err) {
+      localStorage.removeItem(CLAVE_REGISTRO)
+
+      const mensajeError =
+        err instanceof Error
+          ? err.message
+          : 'No se pudo enviar la confirmación.'
+
+      setError(mensajeError)
+      throw new Error(mensajeError)
+    } finally {
+      setCargando(false)
     }
-
-    setPaso('VALIDAR_DNI')
   }
 
   return (
@@ -189,6 +269,12 @@ const manejarCrearCuenta = async (
           </div>
         </div>
 
+        {error && (
+          <p className="register-error" role="alert">
+            {error}
+          </p>
+        )}
+
         {paso === 'VALIDAR_DNI' && (
           <ValidarDni
             onDniValidado={manejarDniValidado}
@@ -199,25 +285,85 @@ const manejarCrearCuenta = async (
           <DatosCliente
             dni={dniRegistro}
             onContinuar={manejarDatosCliente}
-            onVolver={() => setPaso('VALIDAR_DNI')}
-          />
-        )}
-
-        {paso === 'VERIFICAR_CORREO' && (
-          <VerificarCorreo
-            dni={dniRegistro}
-            correo={datosCliente?.correo ?? ''}
-            correoEnmascarado={correoEnmascarado}
-            onVerificado={manejarCorreoVerificado}
-            onVolver={volverDesdeVerificacion}
+            onVolver={() => {
+              setError('')
+              setPaso('VALIDAR_DNI')
+            }}
           />
         )}
 
         {paso === 'CREAR_CREDENCIALES' && (
           <CrearCredenciales
             onCrearCuenta={manejarCrearCuenta}
-           onVolver={() => setPaso('VERIFICAR_CORREO')}
-         />
+            onVolver={() => {
+              setError('')
+              setPaso('DATOS_CLIENTE')
+            }}
+          />
+        )}
+
+        {paso === 'VERIFICAR_CORREO' && (
+          <div className="register-heading">
+            <MailCheck size={44} />
+
+            <h1>Verifica tu correo</h1>
+
+            <p>
+              {mensaje ||
+                'Revisa tu correo y abre el enlace de confirmación de MiDoc.'}
+            </p>
+
+            {datosCliente && (
+              <p>
+                Correo: {datosCliente.correo}
+              </p>
+            )}
+
+            {cargando && (
+              <p>Activando tu cuenta, espera...</p>
+            )}
+
+            <p>
+              El enlace debe abrirse en este mismo
+              navegador para completar el registro.
+            </p>
+
+            {!cargando && (
+              <button
+                type="button"
+                className="register-secondary"
+                onClick={() => {
+                  localStorage.removeItem(CLAVE_REGISTRO)
+                  setDatosCliente(null)
+                  setError('')
+                  setMensaje('')
+                  setPaso('VALIDAR_DNI')
+                }}
+              >
+                Iniciar un nuevo registro
+              </button>
+            )}
+          </div>
+        )}
+
+        {paso === 'FINALIZADO' && (
+          <div className="register-heading">
+            <ShieldCheck size={44} />
+
+            <h1>¡Cuenta creada correctamente!</h1>
+
+            <p>
+              {mensaje}
+            </p>
+
+            <button
+              type="button"
+              className="register-continue"
+              onClick={() => navigate('/login')}
+            >
+              Iniciar sesión
+            </button>
+          </div>
         )}
 
         <div className="register-login">
@@ -230,15 +376,6 @@ const manejarCrearCuenta = async (
             Iniciar sesión
           </button>
         </div>
-
-        {false && (
-          <div>
-            {dniRegistro}
-            {estadoRegistro}
-            {correoEnmascarado}
-            {datosCliente?.correo}
-          </div>
-        )}
       </section>
 
       <section className="register-visual">
@@ -251,20 +388,18 @@ const manejarCrearCuenta = async (
           </div>
 
           <h2>
-            Tu información
+            Tu salud,
             <br />
-            ya puede estar con nosotros.
+            nuestra prioridad.
           </h2>
 
           <p>
-            Si adquiriste una consulta anteriormente,
-            MiDoc reconocerá tus datos para que no tengas
-            que volver a registrarlos.
+            Regístrate para gestionar tus consultas
+            y citas médicas desde MiDoc.
           </p>
 
           <div className="register-visual-note">
             <span>01</span>
-
             <div>
               <strong>Identifícate</strong>
               <p>Ingresa tu DNI.</p>
@@ -273,27 +408,17 @@ const manejarCrearCuenta = async (
 
           <div className="register-visual-note">
             <span>02</span>
-
             <div>
-              <strong>Verifica tu información</strong>
-
-              <p>
-                Comprobaremos si ya tienes datos
-                registrados.
-              </p>
+              <strong>Completa tus datos</strong>
+              <p>Registra tu información personal.</p>
             </div>
           </div>
 
           <div className="register-visual-note">
             <span>03</span>
-
             <div>
               <strong>Confirma tu correo</strong>
-
-              <p>
-                Recibirás un código para verificar tu
-                cuenta.
-              </p>
+              <p>Activa tu cuenta mediante el enlace.</p>
             </div>
           </div>
         </div>
