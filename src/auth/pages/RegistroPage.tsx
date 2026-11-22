@@ -1,11 +1,15 @@
 
 import { useEffect, useState } from 'react'
+import type { FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   ArrowLeft,
   HeartPulse,
   MailCheck,
   ShieldCheck,
+  LockKeyhole,
+  Eye,
+  EyeOff,
 } from 'lucide-react'
 
 import ValidarDni from '../components/registro/ValidarDni'
@@ -16,6 +20,10 @@ import {
   enviarCodigoVerificacion,
   crearCuentaRegistro,
 } from '../../services/registroService'
+
+import {
+  recuperarRegistro,
+} from '../../services/recuperarRegistroService'
 
 import type {
   DatosClienteRegistro,
@@ -29,6 +37,7 @@ type PasoRegistro =
   | 'DATOS_CLIENTE'
   | 'CREAR_CREDENCIALES'
   | 'VERIFICAR_CORREO'
+  | 'RECUPERAR_REGISTRO'
   | 'FINALIZADO'
 
 interface RegistroPendiente {
@@ -39,9 +48,7 @@ interface RegistroPendiente {
 const CLAVE_REGISTRO = 'midoc_registro_pendiente'
 const DURACION_REGISTRO = 30 * 60 * 1000
 
-function guardarRegistro(
-  datos: DatosClienteRegistro
-) {
+function guardarRegistro(datos: DatosClienteRegistro) {
   const pendiente: RegistroPendiente = {
     datos,
     vence: Date.now() + DURACION_REGISTRO,
@@ -53,11 +60,9 @@ function guardarRegistro(
   )
 }
 
-function recuperarRegistro(): DatosClienteRegistro | null {
+function obtenerRegistroPendiente(): DatosClienteRegistro | null {
   try {
-    const guardado = localStorage.getItem(
-      CLAVE_REGISTRO
-    )
+    const guardado = localStorage.getItem(CLAVE_REGISTRO)
 
     if (!guardado) return null
 
@@ -92,12 +97,18 @@ function RegistroPage() {
   const [datosCliente, setDatosCliente] =
     useState<DatosClienteRegistro | null>(null)
 
+  const [contrasenaRecuperacion, setContrasenaRecuperacion] =
+    useState('')
+
+  const [mostrarContrasena, setMostrarContrasena] =
+    useState(false)
+
   const [cargando, setCargando] = useState(false)
   const [error, setError] = useState('')
   const [mensaje, setMensaje] = useState('')
 
   useEffect(() => {
-    const confirmarRegistro = async () => {
+    const procesarConfirmacion = async () => {
       const fragmento = new URLSearchParams(
         window.location.hash.slice(1)
       )
@@ -107,53 +118,59 @@ function RegistroPage() {
       )
 
       const token = fragmento.get('access_token')
+
       const errorAuth =
         fragmento.get('error_description') ||
         parametros.get('error_description')
 
-      if (errorAuth) {
-        setError(errorAuth)
-        setPaso('VERIFICAR_CORREO')
+      const pendiente = obtenerRegistroPendiente()
 
+      if (pendiente) {
+        setDatosCliente(pendiente)
+        setDniRegistro(pendiente.dni)
+      }
+
+      // Evitamos dejar tokens o errores en la URL.
+      if (token || errorAuth) {
         window.history.replaceState(
           {},
           '',
           window.location.pathname
         )
-        return
       }
 
-      const pendiente = recuperarRegistro()
+      if (errorAuth) {
+        setError(
+          'El enlace no pudo utilizarse. ' +
+          'Si ya confirmaste tu correo, puedes recuperar tu registro.'
+        )
+
+        setPaso(
+          pendiente
+            ? 'RECUPERAR_REGISTRO'
+            : 'VALIDAR_DNI'
+        )
+
+        return
+      }
 
       if (!token) {
         if (pendiente) {
-          setDatosCliente(pendiente)
-          setDniRegistro(pendiente.dni)
           setPaso('VERIFICAR_CORREO')
         }
+
         return
       }
 
-      // Retiramos el token de la barra de direcciones.
-      window.history.replaceState(
-        {},
-        '',
-        window.location.pathname
-      )
-
       if (!pendiente) {
         setError(
-          'No encontramos los datos del registro ' +
-          'o el registro ha expirado. ' +
-          'Inicia el proceso nuevamente.'
+          'No encontramos los datos de tu registro pendiente.'
         )
-        setPaso('VERIFICAR_CORREO')
         return
       }
 
       setPaso('VERIFICAR_CORREO')
       setCargando(true)
-      setError('')
 
       try {
         const resultado = await crearCuentaRegistro({
@@ -167,24 +184,22 @@ function RegistroPage() {
 
         localStorage.removeItem(CLAVE_REGISTRO)
 
-        setDatosCliente(null)
-        setMensaje(
-          resultado.mensaje ||
-          'Tu cuenta se creó correctamente.'
-        )
+        setMensaje(resultado.mensaje)
         setPaso('FINALIZADO')
       } catch (err) {
         setError(
           err instanceof Error
             ? err.message
-            : 'No se pudo completar tu registro.'
+            : 'No se pudo completar el registro.'
         )
+
+        setPaso('RECUPERAR_REGISTRO')
       } finally {
         setCargando(false)
       }
     }
 
-    void confirmarRegistro()
+    void procesarConfirmacion()
   }, [])
 
   const manejarDniValidado = (
@@ -208,9 +223,7 @@ function RegistroPage() {
     contrasena: string
   ) => {
     if (!datosCliente) {
-      setError(
-        'Primero debes completar tus datos personales.'
-      )
+      setError('Completa primero tus datos personales.')
       return
     }
 
@@ -234,10 +247,42 @@ function RegistroPage() {
       const mensajeError =
         err instanceof Error
           ? err.message
-          : 'No se pudo enviar la confirmación.'
+          : 'No se pudo iniciar el registro.'
 
       setError(mensajeError)
       throw new Error(mensajeError)
+    } finally {
+      setCargando(false)
+    }
+  }
+
+  const manejarRecuperacion = async (
+    event: FormEvent<HTMLFormElement>
+  ) => {
+    event.preventDefault()
+
+    if (!contrasenaRecuperacion) {
+      setError('Ingresa tu contraseña.')
+      return
+    }
+
+    setError('')
+    setCargando(true)
+
+    try {
+      const resultado = await recuperarRegistro(
+        contrasenaRecuperacion
+      )
+
+      setContrasenaRecuperacion('')
+      setMensaje(resultado)
+      setPaso('FINALIZADO')
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : 'No se pudo recuperar el registro.'
+      )
     } finally {
       setCargando(false)
     }
@@ -264,7 +309,6 @@ function RegistroPage() {
             <div className="register-brand-name">
               Mi<span>Doc</span>
             </div>
-
             <p>Tu salud, más cerca de ti</p>
           </div>
         </div>
@@ -285,20 +329,14 @@ function RegistroPage() {
           <DatosCliente
             dni={dniRegistro}
             onContinuar={manejarDatosCliente}
-            onVolver={() => {
-              setError('')
-              setPaso('VALIDAR_DNI')
-            }}
+            onVolver={() => setPaso('VALIDAR_DNI')}
           />
         )}
 
         {paso === 'CREAR_CREDENCIALES' && (
           <CrearCredenciales
             onCrearCuenta={manejarCrearCuenta}
-            onVolver={() => {
-              setError('')
-              setPaso('DATOS_CLIENTE')
-            }}
+            onVolver={() => setPaso('DATOS_CLIENTE')}
           />
         )}
 
@@ -310,7 +348,7 @@ function RegistroPage() {
 
             <p>
               {mensaje ||
-                'Revisa tu correo y abre el enlace de confirmación de MiDoc.'}
+                'Revisa tu correo y confirma tu cuenta MiDoc.'}
             </p>
 
             {datosCliente && (
@@ -319,31 +357,102 @@ function RegistroPage() {
               </p>
             )}
 
-            {cargando && (
-              <p>Activando tu cuenta, espera...</p>
-            )}
+            {cargando ? (
+              <p>Activando tu cuenta...</p>
+            ) : (
+              <>
+                <p>
+                  ¿Ya confirmaste tu correo, pero tu cuenta
+                  todavía no se activó?
+                </p>
 
-            <p>
-              El enlace debe abrirse en este mismo
-              navegador para completar el registro.
-            </p>
-
-            {!cargando && (
-              <button
-                type="button"
-                className="register-secondary"
-                onClick={() => {
-                  localStorage.removeItem(CLAVE_REGISTRO)
-                  setDatosCliente(null)
-                  setError('')
-                  setMensaje('')
-                  setPaso('VALIDAR_DNI')
-                }}
-              >
-                Iniciar un nuevo registro
-              </button>
+                <button
+                  type="button"
+                  className="register-continue"
+                  onClick={() => {
+                    setError('')
+                    setPaso('RECUPERAR_REGISTRO')
+                  }}
+                >
+                  Ya confirmé mi correo
+                </button>
+              </>
             )}
           </div>
+        )}
+
+        {paso === 'RECUPERAR_REGISTRO' && (
+          <>
+            <div className="register-heading">
+              <ShieldCheck size={44} />
+
+              <h1>Completa tu registro</h1>
+
+              <p>
+                Si ya confirmaste tu correo, ingresa
+                la contraseña que creaste para terminar
+                de activar tu cuenta MiDoc.
+              </p>
+            </div>
+
+            <form
+              className="register-form"
+              onSubmit={manejarRecuperacion}
+            >
+              <div className="register-form-group">
+                <label htmlFor="recuperar-password">
+                  Contraseña
+                </label>
+
+                <div className="register-input">
+                  <LockKeyhole size={20} />
+
+                  <input
+                    id="recuperar-password"
+                    type={
+                      mostrarContrasena
+                        ? 'text'
+                        : 'password'
+                    }
+                    placeholder="Tu contraseña de MiDoc"
+                    autoComplete="current-password"
+                    value={contrasenaRecuperacion}
+                    disabled={cargando}
+                    onChange={(event) =>
+                      setContrasenaRecuperacion(
+                        event.target.value
+                      )
+                    }
+                  />
+
+                  <button
+                    type="button"
+                    className="credentials-eye"
+                    onClick={() =>
+                      setMostrarContrasena(!mostrarContrasena)
+                    }
+                    aria-label="Mostrar u ocultar contraseña"
+                  >
+                    {mostrarContrasena ? (
+                      <EyeOff size={19} />
+                    ) : (
+                      <Eye size={19} />
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                className="register-continue"
+                disabled={cargando}
+              >
+                {cargando
+                  ? 'Activando cuenta...'
+                  : 'Completar mi registro'}
+              </button>
+            </form>
+          </>
         )}
 
         {paso === 'FINALIZADO' && (
@@ -352,9 +461,7 @@ function RegistroPage() {
 
             <h1>¡Cuenta creada correctamente!</h1>
 
-            <p>
-              {mensaje}
-            </p>
+            <p>{mensaje}</p>
 
             <button
               type="button"
@@ -366,16 +473,18 @@ function RegistroPage() {
           </div>
         )}
 
-        <div className="register-login">
-          <span>¿Ya tienes una cuenta?</span>
+        {paso !== 'FINALIZADO' && (
+          <div className="register-login">
+            <span>¿Ya tienes una cuenta?</span>
 
-          <button
-            type="button"
-            onClick={() => navigate('/login')}
-          >
-            Iniciar sesión
-          </button>
-        </div>
+            <button
+              type="button"
+              onClick={() => navigate('/login')}
+            >
+              Iniciar sesión
+            </button>
+          </div>
+        )}
       </section>
 
       <section className="register-visual">
