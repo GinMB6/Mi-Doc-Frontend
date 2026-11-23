@@ -1,0 +1,138 @@
+/* MODAL */
+
+.doctor-modal::backdrop {
+  background: rgba(35, 25, 43, 0.42);
+}
+
+.doctor-modal {
+  width: min(620px, calc(100% - 32px));
+  max-height: 90vh;
+  overflow-y: auto;
+
+  padding: 23px;
+
+  border: 1px solid #e9e1ee;
+  border-radius: 17px;
+  background: #fff;
+}
+
+.doctor-modal button:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
+.doctor-modal-heading {
+  margin-bottom: 20px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.doctor-modal-heading span {
+  color: #7a3dba;
+  font-size: 9px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.doctor-modal-heading h2 {
+  margin: 4px 0 0;
+  font-size: 19px;
+}
+
+.doctor-modal-heading button {
+  width: 34px;
+  height: 34px;
+
+  display: grid;
+  place-items: center;
+
+  border: 1px solid #e8e0ec;
+  border-radius: 8px;
+
+  background: white;
+  color: #77677f;
+  cursor: pointer;
+}
+
+.doctor-modal-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+
+  margin-bottom: 18px;
+}
+
+.doctor-modal-grid > div {
+  padding: 12px;
+
+  border: 1px solid #eee8f1;
+  border-radius: 9px;
+}
+
+.doctor-modal-grid span,
+.doctor-modal-grid strong {
+  display: block;
+}
+
+.doctor-modal-grid > div > span:first-child {
+  color: #665371;
+  font-size: 11px;
+}
+
+.doctor-modal-grid strong {
+  margin-top: 3px;
+  font-size: 10px;
+}
+
+.doctor-attention-actions {
+  padding-top: 17px;
+  border-top: 1px solid #eee8f1;
+}
+
+.doctor-attention-actions p {
+  margin: 3px 0 12px;
+  color: #665371;
+  font-size: 12px;
+}
+
+.doctor-attention-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.doctor-attention-buttons button {
+  padding: 11px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  border-radius: 9px;
+
+  font-size: 10px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.doctor-attention-buttons .attended {
+  border: 1px solid #a9dfbd;
+  background: #e8f8ee;
+  color: #237a45;
+}
+
+.doctor-attention-buttons .missed {
+  border: 1px solid #efb5b5;
+  background: #fff0f0;
+  color: #b43f3f;
+}
+
+@media (max-width: 650px) {
+  .doctor-modal-grid,
+  .doctor-attention-buttons {
+    grid-template-columns: 1fr;
+  }
+}

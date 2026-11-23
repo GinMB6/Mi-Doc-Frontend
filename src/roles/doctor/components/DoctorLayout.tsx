@@ -11,6 +11,8 @@ import {
 } from 'lucide-react'
 import { NavLink, useNavigate } from 'react-router-dom'
 
+import type { PerfilDoctor } from '../../../types/doctor'
+import { useDatosDoctor } from '../useDatosDoctor'
 import '../styles/DoctorLayout.css'
 
 type DoctorLayoutProps = {
@@ -20,6 +22,7 @@ type DoctorLayoutProps = {
 function DoctorLayout({ children }: DoctorLayoutProps) {
   const navigate = useNavigate()
   const [menuAbierto, setMenuAbierto] = useState(false)
+  const { datos: perfil } = useDatosDoctor<PerfilDoctor>('/perfil')
 
   const cerrarMenu = () => {
     setMenuAbierto(false)
@@ -31,7 +34,8 @@ function DoctorLayout({ children }: DoctorLayoutProps) {
         type="button"
         className="doctor-mobile-menu"
         onClick={() => setMenuAbierto(!menuAbierto)}
-        aria-label="Abrir menú"
+        aria-label={menuAbierto ? 'Cerrar menú' : 'Abrir menú'}
+        aria-expanded={menuAbierto}
       >
         {menuAbierto ? <X size={21} /> : <Menu size={21} />}
       </button>
@@ -61,7 +65,7 @@ function DoctorLayout({ children }: DoctorLayoutProps) {
           </div>
         </div>
 
-        <nav className="doctor-navigation">
+        <nav className="doctor-navigation" aria-label="Portal Doctor">
           <NavLink
             to="/doctor/inicio"
             onClick={cerrarMenu}
@@ -98,20 +102,20 @@ function DoctorLayout({ children }: DoctorLayoutProps) {
 
         <div className="doctor-profile">
           <div className="doctor-profile-info">
-            <div className="doctor-profile-avatar">CR</div>
+            <div className="doctor-profile-avatar"><Stethoscope size={17} /></div>
 
             <div>
-              <strong>Dr. Carlos Ramírez</strong>
-              <span>Cardiología</span>
+              <strong>{perfil?.nombre ?? 'Perfil Doctor'}</strong>
+              {perfil && <span>{perfil.especialidad} · {perfil.sede}</span>}
             </div>
           </div>
 
           <button
             type="button"
-            onClick={() => navigate('/login')}
+            onClick={() => navigate('/login', { replace: true })}
           >
             <LogOut size={17} />
-            Cerrar sesión
+            Volver al acceso
           </button>
         </div>
       </aside>
