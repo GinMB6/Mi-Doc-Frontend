@@ -1,3 +1,4 @@
+
 import type {
   CrearCuentaRequest,
   CrearCuentaResponse,
@@ -12,115 +13,89 @@ import type {
 const API_URL =
   import.meta.env.VITE_API_URL ?? 'http://localhost:5000'
 
-/* validamos numero dni */
+async function procesarRespuesta<T>(
+  respuesta: Response
+): Promise<T> {
+  const resultado = await respuesta.json().catch(() => ({}))
+
+  if (!respuesta.ok) {
+    throw new Error(
+      resultado.error ||
+      resultado.mensaje ||
+      'Ocurrió un error al comunicarse con MiDoc.'
+    )
+  }
+
+  return resultado as T
+}
+
+async function post<T>(
+  ruta: string,
+  datos: unknown
+): Promise<T> {
+  const respuesta = await fetch(`${API_URL}${ruta}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(datos),
+  })
+
+  return procesarRespuesta<T>(respuesta)
+}
+
+// ==========================================
+// VALIDAR DNI
+// ==========================================
 
 export async function validarDniRegistro(
   datos: ValidarDniRequest
 ): Promise<ValidarDniResponse> {
-  const respuesta = await fetch(
-    `${API_URL}/api/auth/registro/validar-dni`,
-    {
-      method: 'POST',
-
-      headers: {
-        'Content-Type': 'application/json',
-      },
-
-      body: JSON.stringify(datos),
-    }
+  return post<ValidarDniResponse>(
+    '/api/auth/registro/validar-dni',
+    datos
   )
-
-  if (!respuesta.ok) {
-    throw new Error(
-      'No se pudo validar el DNI. Inténtalo nuevamente.'
-    )
-  }
-
-  const resultado =
-    (await respuesta.json()) as ValidarDniResponse
-
-  return resultado
 }
 
-/* el envio de codigo para el correo */
+// ==========================================
+// INICIAR REGISTRO EN SUPABASE AUTH
+// ==========================================
 
 export async function enviarCodigoVerificacion(
   datos: EnviarCodigoRequest
 ): Promise<EnviarCodigoResponse> {
-  const respuesta = await fetch(
-    `${API_URL}/api/auth/registro/enviar-codigo`,
-    {
-      method: 'POST',
-
-      headers: {
-        'Content-Type': 'application/json',
-      },
-
-      body: JSON.stringify(datos),
-    }
+  return post<EnviarCodigoResponse>(
+    '/api/auth/registro/enviar-codigo',
+    datos
   )
-
-  if (!respuesta.ok) {
-    throw new Error(
-      'No se pudo enviar el código de verificación.'
-    )
-  }
-
-  const resultado =
-    (await respuesta.json()) as EnviarCodigoResponse
-
-  return resultado
 }
 
-/* verificar codigo empieza aqui */
+// ==========================================
+// VERIFICAR CORREO
+// ==========================================
+
+// Esta ruta permanece disponible por compatibilidad.
+// El nuevo flujo confirmará el correo mediante
+// el enlace enviado por Supabase.
 
 export async function verificarCodigoRegistro(
   datos: VerificarCodigoRequest
 ): Promise<VerificarCodigoResponse> {
-  const respuesta = await fetch(
-    `${API_URL}/api/auth/registro/verificar-codigo`,
-    {
-      method: 'POST',
-
-      headers: {
-        'Content-Type': 'application/json',
-      },
-
-      body: JSON.stringify(datos),
-    }
+  return post<VerificarCodigoResponse>(
+    '/api/auth/registro/verificar-codigo',
+    datos
   )
-
-  if (!respuesta.ok) {
-    throw new Error(
-      'No se pudo verificar el código.'
-    )
-  }
-
-  const resultado =
-    (await respuesta.json()) as VerificarCodigoResponse
-
-  return resultado
 }
+
+// ==========================================
+// CREAR PERFIL DEL CLIENTE
+// ==========================================
 
 export async function crearCuentaRegistro(
   datos: CrearCuentaRequest
 ): Promise<CrearCuentaResponse> {
-  const respuesta = await fetch(
-    `${API_URL}/api/auth/registro/crear-cuenta`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(datos),
-    }
+  return post<CrearCuentaResponse>(
+    '/api/auth/registro/crear-cuenta',
+    datos
   )
-
-  if (!respuesta.ok) {
-    throw new Error(
-      'No se pudo crear la cuenta. Inténtalo nuevamente.'
-    )
-  }
-
-  return (await respuesta.json()) as CrearCuentaResponse
 }

@@ -1,3 +1,4 @@
+
 export type EstadoRegistro =
   | 'CUENTA_ACTIVA'
   | 'CLIENTE_PREEXISTENTE'
@@ -8,13 +9,7 @@ export interface ValidarDniRequest {
 }
 
 export interface ValidarDniResponse {
-  estado: EstadoRegistro
-
-  /*
-    Solo vendrá informado cuando el cliente
-    ya exista previamente en MiDoc.
-  */
-  correoEnmascarado?: string
+  mensaje: string
 }
 
 export interface DatosClienteRegistro {
@@ -26,47 +21,29 @@ export interface DatosClienteRegistro {
   fechaNacimiento: string
 }
 
-/* =========================================================
-   VERIFICACIÓN POR CORREO
-   ========================================================= */
-
 export interface EnviarCodigoRequest {
-  dni: string
-
-  /*
-    Para un cliente NUEVO se enviará el correo
-    que acaba de registrar.
-
-    Para un cliente PREEXISTENTE no será necesario
-    enviarlo desde React, porque Flask lo recuperará
-    directamente de la BD.
-  */
-  correo?: string
+  correo: string
+  contrasena: string
 }
 
 export interface EnviarCodigoResponse {
   mensaje: string
-  correoEnmascarado: string
 }
 
 export interface VerificarCodigoRequest {
-  dni: string
+  correo: string
   codigo: string
 }
 
 export interface VerificarCodigoResponse {
   verificado: boolean
   mensaje: string
+  accessToken: string
 }
 
-/* =========================================================
-   finalizar creacion cuenta
-   ========================================================= */
-
 export interface CrearCuentaRequest {
-  dni: string
-  contrasena: string
-  datosCliente?: DatosClienteRegistro
+  accessToken: string
+  datosCliente: DatosClienteRegistro
 }
 
 export interface CrearCuentaResponse {
